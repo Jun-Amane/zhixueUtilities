@@ -58,7 +58,7 @@ namespace analyzeJson
 
 								//std::cout << ans<<std::endl;
 								finalout["答え"][priNum][subNum][i] = answers[i].asString();
-								;
+								//;
 							}
 						}
 					}
@@ -113,7 +113,7 @@ namespace analyzeJson
 		return finalout.toStyledString();
 	}
 
-	int analyzeIfRedoSuccess(std::string str)
+	int analyzeIfSuccess(std::string str)
 	{
 		Json::Reader reader;
 		Json::Value root;
