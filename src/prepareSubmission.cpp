@@ -81,6 +81,14 @@ namespace prepareSubmission
         return finalout;
     }
 
+    std::string submissionPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuHwId){
+        return reqData::sendSubbmission(prepareSubmission::prepareSubmJson(reqData::postAnsJson(tchToken, hwId), stuToken, stuHwId), stuToken);
+    }
 
-
+    std::string automationPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuId ,std::string stuHwId){
+        std::string rtn = "Submissing\n" + reqData::sendSubbmission(prepareSubmission::prepareSubmJson(reqData::postAnsJson(tchToken, hwId), stuToken, stuHwId), stuToken);
+        rtn += "\nRejecting\n";
+        rtn += reqData::redoHomework(tchToken, stuId, hwId);
+        return rtn;
+    }
 }
