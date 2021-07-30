@@ -7,7 +7,7 @@
 
 
 #define postAnsURL "https://mhw.zhixue.com/hw/manage/homework/redeploy"
-
+#define redoURL "https://mhw.zhixue.com/hw/correction/redo"
 
 
 
@@ -16,3 +16,4 @@ std::string postAnsJson(std::string tchToken, std::string hwId);
 std::string analyzeAnsJson(std::string inputJson);
 std::string analyzeHwListJson(std::string inputJson);
 std::string getHwListJson(std::string stuToken);
+std::string redoHomework(std::string tchToken, std::string userId, std::string hwId);
