@@ -102,7 +102,9 @@ namespace analyzeJson
 					index = "インデックスは" + std::__cxx11::to_string(i) + "である。";
 				}
 
+
 				finalout[index + list[i]["hwTitle"].asString()] = list[i]["hwId"].asString();
+				finalout[index + "Student Homework ID"] = list[i]["stuHwId"].asString();
 			}
 		}
 		else
