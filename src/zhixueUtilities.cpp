@@ -1,4 +1,4 @@
-﻿#include "clipp.hpp"
+#include "clipp.hpp"
 #include "zhixueUtilities.hpp"
 
 int main(int argc, char* argv[]) {

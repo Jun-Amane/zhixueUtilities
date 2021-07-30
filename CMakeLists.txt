@@ -1,4 +1,4 @@
-﻿cmake_minimum_required(VERSION 3.16) #cmake最低版本
+cmake_minimum_required(VERSION 3.16) #cmake最低版本
 project("zhixueUtilities") #Project name
 AUX_SOURCE_DIRECTORY(src DIR_SRCS)
 set(CMAKE_CXX_FLAGS "-ljsoncpp")
