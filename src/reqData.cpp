@@ -102,5 +102,11 @@ std::string redoHomework(std::string tchToken, std::string stuId, std::string hw
 	res = curl_easy_perform(curl);
 	curl_easy_cleanup(curl);
 	
-	return str;
+	int rtn = analyzeIfRedoSuccess(str);
+	if(rtn == 0){
+		return ("やり直し成功！");
+	}else{
+		return str;
+	}
+
 }

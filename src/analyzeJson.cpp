@@ -102,3 +102,19 @@ std::string analyzeHwListJson(std::string inputJson){
     return finalout.toStyledString();
 
 }
+
+int analyzeIfRedoSuccess(std::string str){
+	Json::Reader reader;  
+    Json::Value root;
+	if (reader.parse(str.c_str(), root))
+    {
+		if(root["code"].asString() == "000000"){
+			return 0;
+		}
+		else{
+			return -1;
+		}
+	}else{
+		return -1;
+	}
+}

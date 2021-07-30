@@ -17,3 +17,4 @@ std::string analyzeAnsJson(std::string inputJson);
 std::string analyzeHwListJson(std::string inputJson);
 std::string getHwListJson(std::string stuToken);
 std::string redoHomework(std::string tchToken, std::string userId, std::string hwId);
+int analyzeIfRedoSuccess(std::string str);
