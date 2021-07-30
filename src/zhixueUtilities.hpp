@@ -26,9 +26,12 @@ namespace reqData
 
 }
 
-namespace prepareSubmission{
+namespace submission{
     std::string prepareSubmJson(std::string inputStr, std::string stuToken, std::string stuHwId);
     std::string submissionTemplate(std::string stuToken, std::string stuHwId);
+    std::string prepareReviJson(std::string inputStr, std::string stuToken, std::string stuHwId);
+    std::string revisionTemplate(std::string stuToken, std::string stuHwId);
     std::string submissionPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuHwId);
     std::string automationPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuId ,std::string stuHwId);
+    std::string revisionPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuHwId);
 }

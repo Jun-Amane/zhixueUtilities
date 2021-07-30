@@ -11,6 +11,7 @@ int main(int argc, char *argv[])
 		redoHomework,
 		submitHomework,
 		automation,
+		autoRevise,
 		help
 	};
 	mode selected = mode::help;
@@ -40,6 +41,12 @@ int main(int argc, char *argv[])
 					 clipp::required("-hi", "--homework-id") & clipp::value("hwId", hwId) % "Homework ID",
 					 clipp::required("-shi", "--student-homework-id") & clipp::value("stuHwId", stuHwId) % "Student Homework ID");
 
+	auto reviseMode = (clipp::command("autoRevise").set(selected, mode::autoRevise),
+					 clipp::required("-tt", "--teacher-token") & clipp::value("tchToken", tchToken) % "ANY Teacher's Token",
+					 clipp::required("-st", "--student-token") & clipp::value("stuId", stuToken) % "Student's ID",
+					 clipp::required("-hi", "--homework-id") & clipp::value("hwId", hwId) % "Homework ID",
+					 clipp::required("-shi", "--student-homework-id") & clipp::value("stuHwId", stuHwId) % "Student Homework ID");
+
 	auto autoMode = (clipp::command("automation").set(selected, mode::automation),
 					 clipp::required("-tt", "--teacher-token") & clipp::value("tchToken", tchToken) % "ANY Teacher's Token",
 					 clipp::required("-st", "--student-token") & clipp::value("stuId", stuToken) % "Student's ID",
@@ -47,10 +54,10 @@ int main(int argc, char *argv[])
 					 clipp::required("-si", "--student-id") & clipp::value("stuId", stuId) % "Student's ID",
 					 clipp::required("-shi", "--student-homework-id") & clipp::value("stuHwId", stuHwId) % "Student Homework ID");
 
-	auto cli = ((getListMode | getAnsMode | redoMode | submitMode| autoMode | clipp::command("help").set(selected, mode::help)),
+	auto cli = ((getListMode | getAnsMode | redoMode | submitMode| reviseMode | autoMode | clipp::command("help").set(selected, mode::help)),
 				clipp::option("-v", "--version").call([]
-													  { std::cout << "version 0.5final" << std::endl; })
-					.doc("show version"));
+													  { std::cout << "version 1.6final" << std::endl; })
+					.doc("show version"),clipp::option("-h", "--help").set(selected, mode::help));
 
 	if (parse(argc, argv, cli))
 	{
@@ -66,17 +73,19 @@ int main(int argc, char *argv[])
 			std::cout << reqData::redoHomework(tchToken, stuId, hwId) << std::endl;
 			break;
 		case mode::submitHomework:
-			std::cout << prepareSubmission::submissionPipeline(tchToken, hwId, stuToken, stuHwId) << std::endl;break;
+			std::cout << submission::submissionPipeline(tchToken, hwId, stuToken, stuHwId) << std::endl;break;
+		case mode::autoRevise:
+			std::cout << submission::revisionPipeline(tchToken, hwId, stuToken, stuHwId) << std::endl;break;
 		case mode::automation:
-			std::cout << prepareSubmission::automationPipeline(tchToken, hwId, stuToken, stuId, stuHwId) << std::endl;break;
+			std::cout << submission::automationPipeline(tchToken, hwId, stuToken, stuId, stuHwId) << std::endl;break;
 		case mode::help:
-			std::cout << clipp::make_man_page(cli, "zhixueUtilities");
+			std::cout << clipp::make_man_page(cli, "zhixueUtilities") << std::endl;
 			break;
 		}
 	}
 	else
 	{
-		std::cout << clipp::usage_lines(cli, "zhixueUtilities") << std::endl;
+		std::cout << clipp::make_man_page(cli, "zhixueUtilities") << std::endl;
 	}
 
 	return 0;
