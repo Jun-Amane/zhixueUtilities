@@ -33,28 +33,33 @@ std::string analyzeAnsJson(std::string inputJson){
 				{
 					const Json::Value answers = children[i]["answers"];
 					if(answers.size() == 0){
-							finalout[priNum][subNum+"——インデックスはない。"] = "null";
+							finalout["answers"][priNum][subNum][i] = "null";
 					}
 					//std::cout << ans<<std::endl;
 					
 					else{
 						for (unsigned int i = 0; i < answers.size(); i++)
 						{
-							
+							/*
 							if(i < 10){
 								index = "——インデックスは0"+std::__cxx11::to_string(i)+"である。";
 							}else{
 								index = "——インデックスは"+std::__cxx11::to_string(i)+"である。";
 							}
-
+							*/
                             
 							//std::cout << ans<<std::endl;
-							finalout[priNum][subNum+index] = answers[i].asString();;
+							finalout["答え"][priNum][subNum][i] = answers[i].asString();;
 						}
 					}
 					
 				}
 			}
+		}
+		const Json::Value answerAttachments = root["result"]["answerAttachments"];
+		for (unsigned int i = 0; i < answerAttachments.size(); i++)
+		{
+			finalout["答えの添付ファイル"][i] = answerAttachments[i]["path"].asString();
 		}
     }else{
 		printf("err");
