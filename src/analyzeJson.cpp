@@ -27,16 +27,25 @@ namespace analyzeJson
 				const Json::Value topicList = sectionList[i]["topicList"];
 				for (unsigned int i = 0; i < topicList.size(); i++)
 				{
-					subNum = topicList[i]["title"].asString();
+
+					if(i < 10){
+								index = "インデックスは0"+std::__cxx11::to_string(i)+"である。——";
+							}else{
+								index = "インデックスは"+std::__cxx11::to_string(i)+"である。——";
+							}
+							
+
+					subNum = index+topicList[i]["title"].asString();
 					//std::cout << subNum<<std::endl;
 
 					const Json::Value children = topicList[i]["children"];
 					for (unsigned int i = 0; i < children.size(); i++)
 					{
+						
 						const Json::Value answers = children[i]["answers"];
 						if (answers.size() == 0)
 						{
-							finalout["answers"][priNum][subNum][i] = "null";
+							finalout["answers"][priNum]["インデックスはない。——"+subNum][i] = "null";
 						}
 						//std::cout << ans<<std::endl;
 
@@ -44,13 +53,8 @@ namespace analyzeJson
 						{
 							for (unsigned int i = 0; i < answers.size(); i++)
 							{
-								/*
-							if(i < 10){
-								index = "——インデックスは0"+std::__cxx11::to_string(i)+"である。";
-							}else{
-								index = "——インデックスは"+std::__cxx11::to_string(i)+"である。";
-							}
-							*/
+								
+							
 
 								//std::cout << ans<<std::endl;
 								finalout["答え"][priNum][subNum][i] = answers[i].asString();
