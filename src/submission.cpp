@@ -77,15 +77,17 @@ namespace submission
     std::string submissionTemplate(std::string stuToken, std::string stuHwId)
     {
 
-        std::string finalout = "{\"base\":{\"Authorization\":\""+stuToken+"\",\"appId\":\"OAXI57PG\",\"appVersion\":\"2.0.1542\",\"packageName\":\"com.iflytek.elpmobile.student\",\"sysType\":\"Android\",\"sysVersion\":\"Nashi\",\"udid\":\"0\",\"userId\":\"0\",\"utag\":\"\"},\"params\":{\"duration\":0,\"questions\":[],\"stuHwId\":\""+stuHwId+"\",\"submitType\":\"SUBMIT\"}}";
+        std::string finalout = "{\"base\":{\"Authorization\":\"" + stuToken + "\",\"appId\":\"OAXI57PG\",\"appVersion\":\"2.0.1542\",\"packageName\":\"com.iflytek.elpmobile.student\",\"sysType\":\"Android\",\"sysVersion\":\"Nashi\",\"udid\":\"0\",\"userId\":\"0\",\"utag\":\"\"},\"params\":{\"duration\":0,\"questions\":[],\"stuHwId\":\"" + stuHwId + "\",\"submitType\":\"SUBMIT\"}}";
         return finalout;
     }
 
-    std::string submissionPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuHwId){
+    std::string submissionPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuHwId)
+    {
         return reqData::sendSubbmission(submission::prepareSubmJson(reqData::postAnsJson(tchToken, hwId), stuToken, stuHwId), stuToken);
     }
 
-    std::string automationPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuId ,std::string stuHwId){
+    std::string automationPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuId, std::string stuHwId)
+    {
         std::string rtn = "Submissing\n" + reqData::sendSubbmission(submission::prepareSubmJson(reqData::postAnsJson(tchToken, hwId), stuToken, stuHwId), stuToken);
         rtn += "\nRejecting\n";
         rtn += reqData::redoHomework(tchToken, stuId, hwId);
@@ -95,7 +97,7 @@ namespace submission
     std::string revisionTemplate(std::string stuToken, std::string stuHwId)
     {
 
-        std::string finalout = "{\"base\":{\"Authorization\":\""+stuToken+"\",\"appId\":\"OAXI57PG\",\"appVersion\":\"2.0.1542\",\"packageName\":\"com.iflytek.elpmobile.student\",\"sysType\":\"Android\",\"sysVersion\":\"Nashi\",\"udid\":\"0\",\"userId\":\"0\",\"utag\":\"\"},\"params\":{\"duration\":0,\"questions\":[],\"stuHwId\":\""+stuHwId+"\",\"submitType\":\"REVISE\"}}";
+        std::string finalout = "{\"base\":{\"Authorization\":\"" + stuToken + "\",\"appId\":\"OAXI57PG\",\"appVersion\":\"2.0.1542\",\"packageName\":\"com.iflytek.elpmobile.student\",\"sysType\":\"Android\",\"sysVersion\":\"Nashi\",\"udid\":\"0\",\"userId\":\"0\",\"utag\":\"\"},\"params\":{\"duration\":0,\"questions\":[],\"stuHwId\":\"" + stuHwId + "\",\"submitType\":\"REVISE\"}}";
         return finalout;
     }
 
@@ -167,7 +169,8 @@ namespace submission
 
         return finalout.toStyledString();
     }
-    std::string revisionPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuHwId){
+    std::string revisionPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuHwId)
+    {
         return reqData::sendSubbmission(submission::prepareReviJson(reqData::postAnsJson(tchToken, hwId), stuToken, stuHwId), stuToken);
     }
 }

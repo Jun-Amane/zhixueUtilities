@@ -21,19 +21,20 @@ namespace reqData
     size_t CurlWrite_CallbackFunc_StdString(void *contents, size_t size, size_t nmemb, std::string *s);
     std::string postAnsJson(std::string tchToken, std::string hwId);
 
-    std::string getHwListJson(std::string stuToken);
+    std::string getHwListJson(std::string stuToken, bool completed);
     std::string redoHomework(std::string tchToken, std::string userId, std::string hwId);
 
     std::string sendSubbmission(std::string POSTFIELDS, std::string stuToken);
 
 }
 
-namespace submission{
+namespace submission
+{
     std::string prepareSubmJson(std::string inputStr, std::string stuToken, std::string stuHwId);
     std::string submissionTemplate(std::string stuToken, std::string stuHwId);
     std::string prepareReviJson(std::string inputStr, std::string stuToken, std::string stuHwId);
     std::string revisionTemplate(std::string stuToken, std::string stuHwId);
     std::string submissionPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuHwId);
-    std::string automationPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuId ,std::string stuHwId);
+    std::string automationPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuId, std::string stuHwId);
     std::string revisionPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuHwId);
 }

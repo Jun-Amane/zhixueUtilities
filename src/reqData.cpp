@@ -50,10 +50,17 @@ namespace reqData
 		return str;
 	}
 
-	std::string getHwListJson(std::string stuToken)
+	std::string getHwListJson(std::string stuToken, bool completed)
 	{
-
-		std::string getHwListURL = "https://mhw.zhixue.com/homework_middle_service/stuapp/getStudentHomeWorkList?createTime=1627527375497&pageIndex=1&completeStatus=0&pageSize=2147483647&subjectCode=-1&token=" + stuToken;
+		std::string getHwListURL;
+		if (!completed)
+		{
+			getHwListURL = "https://mhw.zhixue.com/homework_middle_service/stuapp/getStudentHomeWorkList?createTime=1627527375497&pageIndex=1&completeStatus=0&pageSize=2147483647&subjectCode=-1&token=" + stuToken;
+		}
+		else
+		{
+			getHwListURL = "https://mhw.zhixue.com/homework_middle_service/stuapp/getStudentHomeWorkList?createTime=1627527375497&pageIndex=1&completeStatus=1&pageSize=2147483647&subjectCode=-1&token=" + stuToken;
+		}
 
 		CURL *curl;
 		CURLcode res;
