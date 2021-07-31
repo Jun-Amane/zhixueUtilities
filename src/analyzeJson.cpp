@@ -103,8 +103,9 @@ namespace analyzeJson
 				}
 
 
-				finalout[index + list[i]["hwTitle"].asString()] = list[i]["hwId"].asString();
-				finalout[index + "Student Homework ID"] = list[i]["stuHwId"].asString();
+				finalout[index]["Title"] = list[i]["hwTitle"].asString();
+				finalout[index]["Homework ID"] = list[i]["hwId"].asString();
+				finalout[index]["Student Homework ID"] = list[i]["stuHwId"].asString();
 			}
 		}
 		else
@@ -133,6 +134,28 @@ namespace analyzeJson
 		else
 		{
 			return -1;
+		}
+	}
+	std::string index2hwId(std::string inputJson, std::string index){
+		Json::Reader reader;
+		Json::Value root;
+		index = "インデックスは" + index + "である。";
+		if (reader.parse(inputJson.c_str(), root))
+		{
+			return root[index]["Homework ID"].asString();
+		}else{
+			return "";
+		}
+	}
+	std::string index2stuHwId(std::string inputJson, std::string index){
+		Json::Reader reader;
+		Json::Value root;
+		index = "インデックスは" + index + "である。";
+		if (reader.parse(inputJson.c_str(), root))
+		{
+			return root[index]["Student Homework ID"].asString();
+		}else{
+			return "";
 		}
 	}
 }

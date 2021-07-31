@@ -12,6 +12,8 @@ namespace analyzeJson
     std::string analyzeAnsJson(std::string inputJson);
     std::string analyzeHwListJson(std::string inputJson);
     int analyzeIfSuccess(std::string str);
+    std::string index2stuHwId(std::string inputJson, std::string index);
+    std::string index2hwId(std::string inputJson, std::string index);
 }
 
 namespace reqData
