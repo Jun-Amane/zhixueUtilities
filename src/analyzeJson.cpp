@@ -11,6 +11,7 @@ namespace analyzeJson
 
 		std::string priNum;
 		std::string subNum;
+		std::string child;
 		//std::string ans;
 		Json::Reader reader;
 		Json::Value root;
@@ -46,10 +47,11 @@ namespace analyzeJson
 					for (unsigned int i = 0; i < children.size(); i++)
 					{
 
+						child = std::__cxx11::to_string(i);
 						const Json::Value answers = children[i]["answers"];
 						if (answers.size() == 0)
 						{
-							finalout["answers"][priNum]["インデックスはない。——" + subNum][i] = "null";
+							finalout["answers"][priNum][subNum][child][i] = "null";
 						}
 						//std::cout << ans<<std::endl;
 
@@ -59,7 +61,7 @@ namespace analyzeJson
 							{
 
 								//std::cout << ans<<std::endl;
-								finalout["答え"][priNum][subNum][i] = answers[i].asString();
+								finalout["答え"][priNum][subNum][child][i] = answers[i].asString();
 								//;
 							}
 						}

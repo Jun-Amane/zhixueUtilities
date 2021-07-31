@@ -33,13 +33,13 @@ int main(int argc, char *argv[])
 
 	auto getAnsMode = (clipp::command("getAns").set(selected, mode::getAns),
 					   clipp::required("-tt", "--teacher-token") & clipp::value("tchToken", tchToken) % "ANY Teacher's Token",
-					   (clipp::required("-hi", "--homework-id") & clipp::value("hwId", hwId) % "Homework ID") | (clipp::required("-i", "--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index" & clipp::required("-st", "--student-token") & clipp::value("stuToken", stuToken) % "Student's Token"),
+					   (clipp::required("-hi", "--homework-id") & clipp::value("hwId", hwId) % "Homework ID") | clipp::required("-st", "--student-token") & clipp::value("stuToken", stuToken) % "Student's Token" & (clipp::required("-i", "--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index"),
 					   clipp::option("--already-completed").set(completed, true).doc("use the list of completed homeworks"));
 
 	auto redoMode = (clipp::command("redoHomework").set(selected, mode::redoHomework),
 					 clipp::required("-tt", "--teacher-token") & clipp::value("tchToken", tchToken) % "ANY Teacher's Token",
 					 clipp::required("-si", "--student-id") & clipp::value("stuId", stuId) % "Student's ID",
-					 (clipp::required("-hi", "--homework-id") & clipp::value("hwId", hwId) % "Homework ID") | (clipp::required("-i", "--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index" & clipp::required("-st", "--student-token") & clipp::value("stuToken", stuToken) % "Student's Token"),
+					 (clipp::required("-hi", "--homework-id") & clipp::value("hwId", hwId) % "Homework ID") | clipp::required("-st", "--student-token") & clipp::value("stuToken", stuToken) % "Student's Token" & (clipp::required("-i", "--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index"),
 					 clipp::option("--already-completed").set(completed, true).doc("use the list of completed homeworks"));
 
 	auto submitMode = (clipp::command("submitHomework").set(selected, mode::submitHomework),

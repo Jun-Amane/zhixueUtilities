@@ -15,6 +15,7 @@ namespace submission
         //std::string ans;
         Json::Reader reader;
         Json::Value root;
+        std::string answer = "";
 
         Json::Value finalout;
         if (reader.parse(str.c_str(), finalout))
@@ -52,13 +53,28 @@ namespace submission
                             {
                                 for (unsigned int i = 0; i < answers.size(); i++)
                                 {
-
-                                    Json::Value temp;
-                                    std::string tempe = "{\"answer\":\"" + answers[i].asString() + "\",\"attachments\":[],\"childQuestionId\":\"" + childQuestionId + "\",\"duration\":0,\"feedback\":0,\"questionId\":\"" + questionId + "\"}";
+                                    if (i == 0)
+                                    {
+                                        answer = answers[i].asString();
+                                    }
+                                    else
+                                    {
+                                        answer += "または";
+                                        answer += answers[i].asString();
+                                    }
+                                    /*Json::Value temp;
+                                    std::string tempe = "{\"answer\":\"" + answer + "\",\"attachments\":[],\"childQuestionId\":\"" + childQuestionId + "\",\"duration\":0,\"feedback\":0,\"questionId\":\"" + questionId + "\"}";
                                     if (reader.parse(tempe.c_str(), temp))
                                     {
                                         finalout["params"]["questions"].append(Json::Value(temp));
-                                    }
+                                    }*/
+                                }
+
+                                Json::Value temp;
+                                std::string tempe = "{\"answer\":\"" + answer + "\",\"attachments\":[],\"childQuestionId\":\"" + childQuestionId + "\",\"duration\":0,\"feedback\":0,\"questionId\":\"" + questionId + "\"}";
+                                if (reader.parse(tempe.c_str(), temp))
+                                {
+                                    finalout["params"]["questions"].append(Json::Value(temp));
                                 }
                             }
                         }
@@ -89,6 +105,7 @@ namespace submission
     std::string automationPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuId, std::string stuHwId)
     {
         std::string rtn = "Submissing\n" + reqData::sendSubbmission(submission::prepareSubmJson(reqData::postAnsJson(tchToken, hwId), stuToken, stuHwId), stuToken);
+        //std::string rtn = submission::prepareSubmJson(reqData::postAnsJson(tchToken, hwId), stuToken, stuHwId);
         rtn += "\nRejecting\n";
         rtn += reqData::redoHomework(tchToken, stuId, hwId);
         return rtn;
