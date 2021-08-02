@@ -160,10 +160,10 @@ namespace reqData
 		}
 	}
 
-	std::string loginApi(std::string username, std::string passwd, std::string appId,std::string ncetAppId)
+	std::string loginApi(std::string username, std::string passwd, std::string appId, std::string ncetAppId)
 	{
 
-		std::string POSTFIELDS = "encode=true&password="+passwd+"&ncetAppId="+ncetAppId+"&method=sso.login.account&encodeType=R2%2FP&useAreaExamNo=true&appId="+appId+"&client=android&key=auto&mac=00%3A00%3A00%3A00%3A00%3A00&username="+username+"&extInfo=%7B%22deviceId%22%3A%220%22%7D";
+		std::string POSTFIELDS = "encode=true&password=" + passwd + "&ncetAppId=" + ncetAppId + "&method=sso.login.account&encodeType=R2%2FP&useAreaExamNo=true&appId=" + appId + "&client=android&key=auto&mac=00%3A00%3A00%3A00%3A00%3A00&username=" + username + "&extInfo=%7B%22deviceId%22%3A%220%22%7D";
 		std::string len = "Content-Length:" + std::__cxx11::to_string(POSTFIELDS.size());
 
 		CURL *curl;
@@ -187,14 +187,12 @@ namespace reqData
 		res = curl_easy_perform(curl);
 		curl_easy_cleanup(curl);
 
-	
 		return str;
-		
 	}
 	std::string casLogin(std::string userId, std::string at)
 	{
 
-		std::string POSTFIELDS = "at="+at+"&ncetAppId=5nSML4Imp8JYefnV3EIfXcOgx4JpPQ7M&loginType=login_name&tokenTimeout=0&userId="+userId+"&autoLogin=false";
+		std::string POSTFIELDS = "at=" + at + "&ncetAppId=5nSML4Imp8JYefnV3EIfXcOgx4JpPQ7M&loginType=login_name&tokenTimeout=0&userId=" + userId + "&autoLogin=false";
 		std::string len = "Content-Length:" + std::__cxx11::to_string(POSTFIELDS.size());
 
 		CURL *curl;
@@ -217,8 +215,6 @@ namespace reqData
 		headers = curl_slist_append(headers, "deviceType:");
 		headers = curl_slist_append(headers, "deviceName:");
 		headers = curl_slist_append(headers, "sucUserToken:");
-		
-
 
 		curl = curl_easy_init();
 		curl_easy_setopt(curl, CURLOPT_URL, casLoginUrl);
@@ -233,15 +229,13 @@ namespace reqData
 		res = curl_easy_perform(curl);
 		curl_easy_cleanup(curl);
 
-	
 		return str;
-		
 	}
 
 	std::string uniteLogin(std::string userId, std::string at)
 	{
 
-		std::string POSTFIELDS = "token=&appId=zhixue_teacher&at="+at+"&autologin=false&ncetAppId=E3KzZvjVkC8kQXWBlR5521GztpApNn99&userId="+userId;
+		std::string POSTFIELDS = "token=&appId=zhixue_teacher&at=" + at + "&autologin=false&ncetAppId=E3KzZvjVkC8kQXWBlR5521GztpApNn99&userId=" + userId;
 		std::string len = "Content-Length:" + std::__cxx11::to_string(POSTFIELDS.size());
 
 		CURL *curl;
@@ -264,8 +258,6 @@ namespace reqData
 		headers = curl_slist_append(headers, "deviceType:");
 		headers = curl_slist_append(headers, "deviceName:");
 		headers = curl_slist_append(headers, "sucUserToken:");
-		
-
 
 		curl = curl_easy_init();
 		curl_easy_setopt(curl, CURLOPT_URL, uniteLoginUrl);
@@ -280,8 +272,38 @@ namespace reqData
 		res = curl_easy_perform(curl);
 		curl_easy_cleanup(curl);
 
-	
 		return str;
-		
 	}
+	std::string getReviseQuestion(std::string stuId, std::string hwId, std::string stuToken)
+	{
+
+		std::string POSTFIELDS = "{\"base\":{\"appId\":\"APP\",\"extend\":{},\"packageName\":\"\",\"sysType\":\"\",\"sysVersion\":\"\",\"udid\":\"\"},\"params\":{\"hwId\":\"" + hwId + "\",\"studentId\":\"" + stuId + "\"}}";
+		std::string len = "Content-Length:" + std::__cxx11::to_string(POSTFIELDS.size());
+		std::string auth = "Authorization:" + stuToken;
+
+		CURL *curl;
+		CURLcode res;
+		struct curl_slist *headers = NULL;
+		std::string str;
+
+		headers = curl_slist_append(headers, len.c_str());
+		headers = curl_slist_append(headers, auth.c_str());
+		headers = curl_slist_append(headers, "Content-Type:application/json");
+
+		curl = curl_easy_init();
+		curl_easy_setopt(curl, CURLOPT_URL, reviseQuestionUrl);
+		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+		curl_easy_setopt(curl, CURLOPT_POSTFIELDS, POSTFIELDS.c_str());
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, CurlWrite_CallbackFunc_StdString);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &str);
+		curl_easy_setopt(curl, CURLOPT_POST, 1);
+		curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
+		//curl_easy_setopt(curl, CURLOPT_HEADER, 1);
+		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+		res = curl_easy_perform(curl);
+		curl_easy_cleanup(curl);
+
+		return str;
+	}
+
 }

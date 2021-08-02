@@ -117,7 +117,7 @@ namespace submission
         return finalout;
     }
 
-    std::string prepareReviJson(std::string inputStr, std::string stuToken, std::string stuHwId)
+    std::string prepareReviJson(std::string inputStr, std::string stuToken, std::string stuHwId, std::string stuId, std::string hwId)
     {
 
         std::string str = revisionTemplate(stuToken, stuHwId);
@@ -127,6 +127,7 @@ namespace submission
         //std::string ans;
         Json::Reader reader;
         Json::Value root;
+        Json::Value reviseQuest;
 
         Json::Value finalout;
         if (reader.parse(str.c_str(), finalout))
@@ -142,34 +143,48 @@ namespace submission
                     {
 
                         questionId = topicList[i]["questionId"].asString();
-
-                        const Json::Value children = topicList[i]["children"];
-                        for (unsigned int i = 0; i < children.size(); i++)
+                        if (reader.parse(reqData::getReviseQuestion(stuId, hwId, stuToken).c_str(), reviseQuest))
                         {
-                            childQuestionId = children[i]["childQuestionId"].asString();
-
-                            const Json::Value answers = children[i]["answers"];
-                            if (answers.size() == 0)
+                            //std::cout << reqData::getReviseQuestion(stuId, hwId,stuToken);
+                            for (unsigned int j = 0; j < reviseQuest["result"]["questions"].size(); j++)
                             {
 
-                                Json::Value temp;
-                                std::string tempe = "{\"answer\":\"\",\"attachments\":[],\"childQuestionId\":\"" + childQuestionId + "\",\"duration\":0,\"feedback\":0,\"questionId\":\"" + questionId + "\"}";
-                                if (reader.parse(tempe.c_str(), temp))
+                                if (reviseQuest["result"]["questions"][j]["questionId"] == questionId)
                                 {
-                                    finalout["params"]["questions"].append(temp);
-                                }
-                            }
-
-                            else
-                            {
-                                for (unsigned int i = 0; i < answers.size(); i++)
-                                {
-
-                                    Json::Value temp;
-                                    std::string tempe = "{\"answer\":\"" + answers[i].asString() + "\",\"attachments\":[],\"childQuestionId\":\"" + childQuestionId + "\",\"duration\":0,\"feedback\":0,\"questionId\":\"" + questionId + "\"}";
-                                    if (reader.parse(tempe.c_str(), temp))
+                                    const Json::Value children = topicList[i]["children"];
+                                    for (unsigned int i = 0; i < children.size(); i++)
                                     {
-                                        finalout["params"]["questions"].append(Json::Value(temp));
+                                        childQuestionId = children[i]["childQuestionId"].asString();
+
+                                        for (unsigned int k = 0; k < reviseQuest["result"]["questions"][j]["childQuestions"].size(); k++)
+                                            if (reviseQuest["result"]["questions"][j]["childQuestions"][k]["childQuestionId"] == childQuestionId)
+                                            {
+                                                const Json::Value answers = children[i]["answers"];
+                                                if (answers.size() == 0)
+                                                {
+
+                                                    Json::Value temp;
+                                                    std::string tempe = "{\"answer\":\"\",\"attachments\":[],\"childQuestionId\":\"" + childQuestionId + "\",\"duration\":0,\"feedback\":0,\"questionId\":\"" + questionId + "\"}";
+                                                    if (reader.parse(tempe.c_str(), temp))
+                                                    {
+                                                        finalout["params"]["questions"].append(temp);
+                                                    }
+                                                }
+
+                                                else
+                                                {
+                                                    for (unsigned int i = 0; i < answers.size(); i++)
+                                                    {
+
+                                                        Json::Value temp;
+                                                        std::string tempe = "{\"answer\":\"" + answers[i].asString() + "\",\"attachments\":[],\"childQuestionId\":\"" + childQuestionId + "\",\"duration\":0,\"feedback\":0,\"questionId\":\"" + questionId + "\"}";
+                                                        if (reader.parse(tempe.c_str(), temp))
+                                                        {
+                                                            finalout["params"]["questions"].append(Json::Value(temp));
+                                                        }
+                                                    }
+                                                }
+                                            }
                                     }
                                 }
                             }
@@ -185,8 +200,8 @@ namespace submission
 
         return finalout.toStyledString();
     }
-    std::string revisionPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuHwId)
+    std::string revisionPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuHwId, std::string stuId)
     {
-        return reqData::sendSubbmission(submission::prepareReviJson(reqData::postAnsJson(tchToken, hwId), stuToken, stuHwId), stuToken);
+        return reqData::sendSubbmission(submission::prepareReviJson(reqData::postAnsJson(tchToken, hwId), stuToken, stuHwId, stuId, hwId), stuToken);
     }
 }

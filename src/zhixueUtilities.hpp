@@ -9,6 +9,7 @@
 #define loginApiUrl "https://open.changyan.com/sso/v1/api"
 #define casLoginUrl "https://www.zhixue.com/container/app/login/casLogin"
 #define uniteLoginUrl "https://app.zhixue.com/appteacher/home/uniteLogin?"
+#define reviseQuestionUrl "https://mhw.zhixue.com/hw/revise/questions"
 
 namespace analyzeJson
 {
@@ -29,19 +30,20 @@ namespace reqData
 
     std::string sendSubbmission(std::string POSTFIELDS, std::string stuToken);
     std::string casLogin(std::string userId, std::string at);
-    std::string loginApi(std::string username, std::string passwd, std::string appId,std::string ncetAppId);
+    std::string loginApi(std::string username, std::string passwd, std::string appId, std::string ncetAppId);
     std::string uniteLogin(std::string userId, std::string at);
+    std::string getReviseQuestion(std::string stuId, std::string hwId, std::string stuToken);
 }
 
 namespace submission
 {
     std::string prepareSubmJson(std::string inputStr, std::string stuToken, std::string stuHwId);
     std::string submissionTemplate(std::string stuToken, std::string stuHwId);
-    std::string prepareReviJson(std::string inputStr, std::string stuToken, std::string stuHwId);
+    std::string prepareReviJson(std::string inputStr, std::string stuToken, std::string stuHwId, std::string stuId, std::string hwId);
     std::string revisionTemplate(std::string stuToken, std::string stuHwId);
     std::string submissionPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuHwId);
     std::string automationPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuId, std::string stuHwId);
-    std::string revisionPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuHwId);
+    std::string revisionPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuHwId, std::string stuId);
 }
 
 namespace login
@@ -49,7 +51,7 @@ namespace login
     std::string stuLoginPipeline(std::string username, std::string passwd);
     std::string apiRes2at(std::string inputStr);
     std::string apiRes2userId(std::string inputStr);
-     std::string tchLoginPipeline(std::string username, std::string passwd);
-     std::string finalout2Token(std::string inputStr);
-     std::string finalout2userId(std::string inputStr);
+    std::string tchLoginPipeline(std::string username, std::string passwd);
+    std::string finalout2Token(std::string inputStr);
+    std::string finalout2userId(std::string inputStr);
 }

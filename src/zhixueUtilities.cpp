@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 
 	auto submitMode = (clipp::command("submitHomework").set(selected, mode::submitHomework),
 					   clipp::required("-tch", "--teacher-login") & clipp::value("tchUsername", tchUsername) % "ANY Teacher's Username" & clipp::value("tchPasswd", tchPasswd) % "THE Teacher's encoded Password",
-					  clipp::required("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's Psssword",
+					   clipp::required("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's Psssword",
 					   (clipp::required("-hi", "--homework-ids") & clipp::value("hwId", hwId) % "Homework ID" & clipp::value("stuHwId", stuHwId) % "Student Homework ID") | (clipp::required("-i", "--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index"),
 					   clipp::option("--already-done").set(completed, true).doc("use the list of completed homeworks"));
 
@@ -64,11 +64,9 @@ int main(int argc, char *argv[])
 					 (clipp::required("-hi", "--homework-ids") & clipp::value("hwId", hwId) % "Homework ID" & clipp::value("stuHwId", stuHwId) % "Student Homework ID") | (clipp::required("-i", "--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index"),
 					 clipp::option("--already-done").set(completed, true).doc("use the list of completed homeworks"));
 
-	
-
 	auto cli = ((getListMode | getAnsMode | redoMode | submitMode | reviseMode | autoMode | clipp::command("help").set(selected, mode::help)),
 				clipp::option("-v", "--version").call([]
-													  { std::cout << "version 3.2final" << std::endl; })
+													  { std::cout << "version 6.4final" << std::endl; })
 					.doc("show version"),
 				clipp::option("-h", "--help").set(selected, mode::help).doc("show this help message"));
 
@@ -77,73 +75,73 @@ int main(int argc, char *argv[])
 		switch (selected)
 		{
 		case mode::getList:
-			std::cout << analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername,stuPasswd)), completed)) << std::endl;
+			std::cout << analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), completed)) << std::endl;
 			break;
 		case mode::getAns:
 			if (useIndex)
 			{
-				std::string inputJson = analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername,stuPasswd)), completed));
+				std::string inputJson = analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), completed));
 				hwId = analyzeJson::index2hwId(inputJson, listIndex);
-				std::cout << analyzeJson::analyzeAnsJson(reqData::postAnsJson(login::finalout2Token(login::tchLoginPipeline(tchUsername,tchPasswd)), hwId)) << std::endl;
+				std::cout << analyzeJson::analyzeAnsJson(reqData::postAnsJson(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId)) << std::endl;
 			}
 			else
 			{
-				std::cout << analyzeJson::analyzeAnsJson(reqData::postAnsJson(login::finalout2Token(login::tchLoginPipeline(tchUsername,tchPasswd)), hwId)) << std::endl;
+				std::cout << analyzeJson::analyzeAnsJson(reqData::postAnsJson(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId)) << std::endl;
 			}
 
 			break;
 		case mode::redoHomework:
 			if (useIndex)
 			{
-				std::string inputJson = analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername,stuPasswd)), completed));
+				std::string inputJson = analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), completed));
 				hwId = analyzeJson::index2hwId(inputJson, listIndex);
-				std::cout << reqData::redoHomework(login::finalout2Token(login::tchLoginPipeline(tchUsername,tchPasswd)), login::finalout2userId(login::stuLoginPipeline(stuUsername,stuPasswd)), hwId) << std::endl;
+				std::cout << reqData::redoHomework(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), login::finalout2userId(login::stuLoginPipeline(stuUsername, stuPasswd)), hwId) << std::endl;
 			}
 			else
 			{
-				std::cout << reqData::redoHomework(login::finalout2Token(login::tchLoginPipeline(tchUsername,tchPasswd)), login::finalout2userId(login::stuLoginPipeline(stuUsername,stuPasswd)), hwId) << std::endl;
+				std::cout << reqData::redoHomework(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), login::finalout2userId(login::stuLoginPipeline(stuUsername, stuPasswd)), hwId) << std::endl;
 			}
 
 			break;
 		case mode::submitHomework:
 			if (useIndex)
 			{
-				std::string inputJson = analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername,stuPasswd)), completed));
+				std::string inputJson = analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), completed));
 				hwId = analyzeJson::index2hwId(inputJson, listIndex);
 				stuHwId = analyzeJson::index2stuHwId(inputJson, listIndex);
-				std::cout << submission::submissionPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername,tchPasswd)), hwId, login::finalout2Token(login::stuLoginPipeline(stuUsername,stuPasswd)), stuHwId) << std::endl;
+				std::cout << submission::submissionPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), stuHwId) << std::endl;
 			}
 			else
 			{
-				std::cout << submission::submissionPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername,tchPasswd)), hwId, login::finalout2Token(login::stuLoginPipeline(stuUsername,stuPasswd)), stuHwId) << std::endl;
+				std::cout << submission::submissionPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), stuHwId) << std::endl;
 			}
 
 			break;
 		case mode::autoRevise:
 			if (useIndex)
 			{
-				std::string inputJson = analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername,stuPasswd)), completed));
+				std::string inputJson = analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), completed));
 				hwId = analyzeJson::index2hwId(inputJson, listIndex);
 				stuHwId = analyzeJson::index2stuHwId(inputJson, listIndex);
-				std::cout << submission::revisionPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername,tchPasswd)), hwId, login::finalout2Token(login::stuLoginPipeline(stuUsername,stuPasswd)), stuHwId) << std::endl;
+				std::cout << submission::revisionPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), stuHwId, login::finalout2userId(login::stuLoginPipeline(stuUsername, stuPasswd))) << std::endl;
 			}
 			else
 			{
-				std::cout << submission::revisionPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername,tchPasswd)), hwId, login::finalout2Token(login::stuLoginPipeline(stuUsername,stuPasswd)), stuHwId) << std::endl;
+				std::cout << submission::revisionPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), stuHwId, login::finalout2userId(login::stuLoginPipeline(stuUsername, stuPasswd))) << std::endl;
 			}
 
 			break;
 		case mode::automation:
 			if (useIndex)
 			{
-				std::string inputJson = analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername,stuPasswd)), completed));
+				std::string inputJson = analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), completed));
 				hwId = analyzeJson::index2hwId(inputJson, listIndex);
 				stuHwId = analyzeJson::index2stuHwId(inputJson, listIndex);
-				std::cout << submission::automationPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername,tchPasswd)), hwId, login::finalout2Token(login::stuLoginPipeline(stuUsername,stuPasswd)), login::finalout2userId(login::stuLoginPipeline(stuUsername,stuPasswd)), stuHwId) << std::endl;
+				std::cout << submission::automationPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), login::finalout2userId(login::stuLoginPipeline(stuUsername, stuPasswd)), stuHwId) << std::endl;
 			}
 			else
 			{
-				std::cout << submission::automationPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername,tchPasswd)), hwId, login::finalout2Token(login::stuLoginPipeline(stuUsername,stuPasswd)), login::finalout2userId(login::stuLoginPipeline(stuUsername,stuPasswd)), stuHwId) << std::endl;
+				std::cout << submission::automationPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), login::finalout2userId(login::stuLoginPipeline(stuUsername, stuPasswd)), stuHwId) << std::endl;
 			}
 			break;
 		case mode::help:

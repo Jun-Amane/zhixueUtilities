@@ -65,10 +65,10 @@ namespace login
 
         Json::Value finalout;
 
-        std::string userId = login::apiRes2userId(reqData::loginApi(username, passwd, "zhixue_student","5nSML4Imp8JYefnV3EIfXcOgx4JpPQ7M"));
-        std::string at = login::apiRes2at(reqData::loginApi(username, passwd, "zhixue_student","5nSML4Imp8JYefnV3EIfXcOgx4JpPQ7M"));
+        std::string userId = login::apiRes2userId(reqData::loginApi(username, passwd, "zhixue_student", "5nSML4Imp8JYefnV3EIfXcOgx4JpPQ7M"));
+        std::string at = login::apiRes2at(reqData::loginApi(username, passwd, "zhixue_student", "5nSML4Imp8JYefnV3EIfXcOgx4JpPQ7M"));
 
-       // std::cout << userId << std::endl << at <<std::endl;
+        // std::cout << userId << std::endl << at <<std::endl;
 
         if (userId != "" && at != "")
         {
@@ -76,13 +76,16 @@ namespace login
             //std::cout << resultStr << std::endl;
             if (reader.parse(resultStr.c_str(), root))
             {
-                if(root["errorInfo"].asString() == "操作成功"){
-                    
-                    finalout["name"]=root["result"]["userInfo"]["name"].asString();
-                    finalout["userId"]=root["result"]["userInfo"]["id"].asString();
-                    finalout["token"]=root["result"]["token"].asString();
-                }else{
-                    finalout =root;
+                if (root["errorInfo"].asString() == "操作成功")
+                {
+
+                    finalout["name"] = root["result"]["userInfo"]["name"].asString();
+                    finalout["userId"] = root["result"]["userInfo"]["id"].asString();
+                    finalout["token"] = root["result"]["token"].asString();
+                }
+                else
+                {
+                    finalout = root;
                 }
             }
             else
@@ -92,7 +95,7 @@ namespace login
         }
         else
         {
-             printf("\nerr2\n");
+            printf("\nerr2\n");
         }
         return finalout.toStyledString();
     }
@@ -105,10 +108,10 @@ namespace login
 
         Json::Value finalout;
 
-        std::string userId = login::apiRes2userId(reqData::loginApi(username, passwd, "zhixue_teacher","E3KzZvjVkC8kQXWBlR5521GztpApNn99"));
-        std::string at = login::apiRes2at(reqData::loginApi(username, passwd, "zhixue_teacher","E3KzZvjVkC8kQXWBlR5521GztpApNn99"));
+        std::string userId = login::apiRes2userId(reqData::loginApi(username, passwd, "zhixue_teacher", "E3KzZvjVkC8kQXWBlR5521GztpApNn99"));
+        std::string at = login::apiRes2at(reqData::loginApi(username, passwd, "zhixue_teacher", "E3KzZvjVkC8kQXWBlR5521GztpApNn99"));
 
-       // std::cout << userId << std::endl << at <<std::endl;
+        // std::cout << userId << std::endl << at <<std::endl;
 
         if (userId != "" && at != "")
         {
@@ -116,13 +119,16 @@ namespace login
             //std::cout << resultStr << std::endl;
             if (reader.parse(resultStr.c_str(), root))
             {
-                if(root["errorInfo"].asString() == "操作成功"){
-                    
-                    finalout["name"]=root["result"]["user"]["userInfo"]["name"].asString();
-                    finalout["userId"]=root["result"]["user"]["userInfo"]["id"].asString();
-                    finalout["token"]=root["result"]["user"]["token"].asString();
-                }else{
-                    finalout =root;
+                if (root["errorInfo"].asString() == "操作成功")
+                {
+
+                    finalout["name"] = root["result"]["user"]["userInfo"]["name"].asString();
+                    finalout["userId"] = root["result"]["user"]["userInfo"]["id"].asString();
+                    finalout["token"] = root["result"]["user"]["token"].asString();
+                }
+                else
+                {
+                    finalout = root;
                 }
             }
             else
@@ -132,30 +138,38 @@ namespace login
         }
         else
         {
-             printf("\nerr\n");
+            printf("\nerr\n");
         }
         return finalout.toStyledString();
     }
 
-    std::string finalout2Token(std::string inputStr){
+    std::string finalout2Token(std::string inputStr)
+    {
         Json::Reader reader;
         Json::Value root;
 
-         if (reader.parse(inputStr.c_str(), root)){
-             return root["token"].asString();
-         }else{
-             return "";
-         }
+        if (reader.parse(inputStr.c_str(), root))
+        {
+            return root["token"].asString();
+        }
+        else
+        {
+            return "";
+        }
     }
 
-    std::string finalout2userId(std::string inputStr){
+    std::string finalout2userId(std::string inputStr)
+    {
         Json::Reader reader;
         Json::Value root;
 
-         if (reader.parse(inputStr.c_str(), root)){
-             return root["userId"].asString();
-         }else{
-             return "";
-         }
+        if (reader.parse(inputStr.c_str(), root))
+        {
+            return root["userId"].asString();
+        }
+        else
+        {
+            return "";
+        }
     }
 }
