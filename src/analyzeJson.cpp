@@ -51,7 +51,7 @@ namespace analyzeJson
 						const Json::Value answers = children[i]["answers"];
 						if (answers.size() == 0)
 						{
-							finalout["answers"][priNum][subNum][child][i] = "null";
+							finalout["答え"][priNum][subNum][child][i] = "null";
 						}
 						//std::cout << ans<<std::endl;
 
