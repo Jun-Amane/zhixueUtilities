@@ -1,6 +1,5 @@
 #include "zhixueUtilities.hpp"
 #include <jsoncpp/json/json.h>
-#include <curl/curl.h>
 
 namespace submission
 {
@@ -83,7 +82,7 @@ namespace submission
             }
             else
             {
-                printf("err");
+                printf("\nerr\n");
             }
         }
 
@@ -180,7 +179,7 @@ namespace submission
             }
             else
             {
-                printf("err");
+                printf("\nerr\n");
             }
         }
 

@@ -76,7 +76,7 @@ namespace analyzeJson
 		}
 		else
 		{
-			printf("err");
+			printf("\nerr\n");
 		}
 
 		return finalout.toStyledString();
@@ -115,7 +115,7 @@ namespace analyzeJson
 		}
 		else
 		{
-			printf("err");
+			printf("\nerr\n");
 		}
 
 		return finalout.toStyledString();
@@ -127,7 +127,7 @@ namespace analyzeJson
 		Json::Value root;
 		if (reader.parse(str.c_str(), root))
 		{
-			if (root["code"].asString() == "000000")
+			if (root["code"].asString() == "000000" || root["code"].asString() == "success")
 			{
 				return 0;
 			}
