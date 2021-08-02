@@ -4,7 +4,7 @@
 namespace submission
 {
 
-    std::string prepareSubmJson(std::string inputStr, std::string stuToken, std::string stuHwId)
+    std::string prepareSubmJson(std::string inputStr, std::string stuToken, std::string stuHwId, std::string attachmentUrl)
     {
 
         std::string str = submissionTemplate(stuToken, stuHwId);
@@ -41,7 +41,16 @@ namespace submission
                             {
 
                                 Json::Value temp;
-                                std::string tempe = "{\"answer\":\"\",\"attachments\":[],\"childQuestionId\":\"" + childQuestionId + "\",\"duration\":0,\"feedback\":0,\"questionId\":\"" + questionId + "\"}";
+                                std::string tempe;
+                                if (attachmentUrl.empty())
+                                {
+                                    tempe = "{\"answer\":\"\",\"attachments\":[],\"childQuestionId\":\"" + childQuestionId + "\",\"duration\":0,\"feedback\":0,\"questionId\":\"" + questionId + "\"}";
+                                }
+                                else
+                                {
+                                    tempe = "{\"answer\":\"\",\"attachments\":[{\"fileType\":1,\"path\":\"" + attachmentUrl + "\",\"sort\":0,\"sourceType\":2}],\"childQuestionId\":\"" + childQuestionId + "\",\"duration\":0,\"feedback\":0,\"questionId\":\"" + questionId + "\"}";
+                                }
+
                                 if (reader.parse(tempe.c_str(), temp))
                                 {
                                     finalout["params"]["questions"].append(temp);
@@ -96,14 +105,14 @@ namespace submission
         return finalout;
     }
 
-    std::string submissionPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuHwId)
+    std::string submissionPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuHwId, std::string attachmentUrl)
     {
-        return reqData::sendSubbmission(submission::prepareSubmJson(reqData::postAnsJson(tchToken, hwId), stuToken, stuHwId), stuToken);
+        return reqData::sendSubbmission(submission::prepareSubmJson(reqData::postAnsJson(tchToken, hwId), stuToken, stuHwId, attachmentUrl), stuToken);
     }
 
-    std::string automationPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuId, std::string stuHwId)
+    std::string automationPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuId, std::string stuHwId, std::string attachmentUrl)
     {
-        std::string rtn = "Submissing\n" + reqData::sendSubbmission(submission::prepareSubmJson(reqData::postAnsJson(tchToken, hwId), stuToken, stuHwId), stuToken);
+        std::string rtn = "Submissing\n" + reqData::sendSubbmission(submission::prepareSubmJson(reqData::postAnsJson(tchToken, hwId), stuToken, stuHwId, attachmentUrl), stuToken);
         //std::string rtn = submission::prepareSubmJson(reqData::postAnsJson(tchToken, hwId), stuToken, stuHwId);
         rtn += "\nRejecting\n";
         rtn += reqData::redoHomework(tchToken, stuId, hwId);
@@ -117,7 +126,7 @@ namespace submission
         return finalout;
     }
 
-    std::string prepareReviJson(std::string inputStr, std::string stuToken, std::string stuHwId, std::string stuId, std::string hwId)
+    std::string prepareReviJson(std::string inputStr, std::string stuToken, std::string stuHwId, std::string stuId, std::string hwId, std::string attachmentUrl)
     {
 
         std::string str = revisionTemplate(stuToken, stuHwId);
@@ -162,9 +171,17 @@ namespace submission
                                                 const Json::Value answers = children[i]["answers"];
                                                 if (answers.size() == 0)
                                                 {
-
+                                                    std::string tempe;
                                                     Json::Value temp;
-                                                    std::string tempe = "{\"answer\":\"\",\"attachments\":[],\"childQuestionId\":\"" + childQuestionId + "\",\"duration\":0,\"feedback\":0,\"questionId\":\"" + questionId + "\"}";
+                                                    if (attachmentUrl.empty())
+                                                    {
+                                                        tempe = "{\"answer\":\"\",\"attachments\":[],\"childQuestionId\":\"" + childQuestionId + "\",\"duration\":0,\"feedback\":0,\"questionId\":\"" + questionId + "\"}";
+                                                    }
+                                                    else
+                                                    {
+                                                        tempe = "{\"answer\":\"\",\"attachments\":[{\"fileType\":1,\"path\":\"" + attachmentUrl + "\",\"sort\":0,\"sourceType\":2}],\"childQuestionId\":\"" + childQuestionId + "\",\"duration\":0,\"feedback\":0,\"questionId\":\"" + questionId + "\"}";
+                                                    }
+
                                                     if (reader.parse(tempe.c_str(), temp))
                                                     {
                                                         finalout["params"]["questions"].append(temp);
@@ -175,7 +192,6 @@ namespace submission
                                                 {
                                                     for (unsigned int i = 0; i < answers.size(); i++)
                                                     {
-
                                                         Json::Value temp;
                                                         std::string tempe = "{\"answer\":\"" + answers[i].asString() + "\",\"attachments\":[],\"childQuestionId\":\"" + childQuestionId + "\",\"duration\":0,\"feedback\":0,\"questionId\":\"" + questionId + "\"}";
                                                         if (reader.parse(tempe.c_str(), temp))
@@ -200,8 +216,8 @@ namespace submission
 
         return finalout.toStyledString();
     }
-    std::string revisionPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuHwId, std::string stuId)
+    std::string revisionPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuHwId, std::string stuId, std::string attachmentUrl)
     {
-        return reqData::sendSubbmission(submission::prepareReviJson(reqData::postAnsJson(tchToken, hwId), stuToken, stuHwId, stuId, hwId), stuToken);
+        return reqData::sendSubbmission(submission::prepareReviJson(reqData::postAnsJson(tchToken, hwId), stuToken, stuHwId, stuId, hwId, attachmentUrl), stuToken);
     }
 }

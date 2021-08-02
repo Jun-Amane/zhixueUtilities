@@ -26,6 +26,7 @@ int main(int argc, char *argv[])
 	std::string stuPasswd = "";
 	std::string tchUsername = "";
 	std::string tchPasswd = "";
+	std::string attachmentUrl = "";
 
 	//std::string finaloutStr;
 
@@ -56,6 +57,7 @@ int main(int argc, char *argv[])
 					   clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's Psssword",
 					   clipp::option("-hi", "--homework-ids") & clipp::value("hwId", hwId) % "Homework ID" & clipp::value("stuHwId", stuHwId) % "Student Homework ID",
 					   clipp::option("--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index",
+					   clipp::option("--with-attachment")& clipp::value("attachmentUrl", attachmentUrl) % "Attachmenet URL, only supports pics, maybe",
 					   clipp::option("--already-done").set(completed, true).doc("use the list of completed homeworks"));
 
 	auto reviseMode = (clipp::command("autoRevise").set(selected, mode::autoRevise),
@@ -63,6 +65,7 @@ int main(int argc, char *argv[])
 					   clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's Psssword",
 					   clipp::option("-hi", "--homework-ids") & clipp::value("hwId", hwId) % "Homework ID" & clipp::value("stuHwId", stuHwId) % "Student Homework ID",
 					   clipp::option("--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index",
+					   clipp::option("--with-attachment")& clipp::value("attachmentUrl", attachmentUrl) % "Attachmenet URL, only supports pics, maybe",
 					   clipp::option("--already-done").set(completed, true).doc("use the list of completed homeworks"));
 
 	auto autoMode = (clipp::command("automation").set(selected, mode::automation),
@@ -70,6 +73,7 @@ int main(int argc, char *argv[])
 					 clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's Psssword",
 					 clipp::option("-hi", "--homework-ids") & clipp::value("hwId", hwId) % "Homework ID" & clipp::value("stuHwId", stuHwId) % "Student Homework ID",
 					 clipp::option("--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index",
+					 clipp::option("--with-attachment")& clipp::value("attachmentUrl", attachmentUrl) % "Attachmenet URL, only supports pics, maybe",
 					 clipp::option("--already-done").set(completed, true).doc("use the list of completed homeworks"));
 
 	auto cli = ((getListMode | getAnsMode | redoMode | submitMode | reviseMode | autoMode | clipp::command("help").set(selected, mode::help)),
@@ -188,7 +192,7 @@ int main(int argc, char *argv[])
 					std::string inputJson = analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), completed));
 					hwId = analyzeJson::index2hwId(inputJson, listIndex);
 					stuHwId = analyzeJson::index2stuHwId(inputJson, listIndex);
-					std::cout << submission::submissionPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), stuHwId) << std::endl;
+					std::cout << submission::submissionPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), stuHwId, attachmentUrl) << std::endl;
 				}
 				else
 				{
@@ -199,7 +203,7 @@ int main(int argc, char *argv[])
 					}
 					else
 					{
-						std::cout << submission::submissionPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), stuHwId) << std::endl;
+						std::cout << submission::submissionPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), stuHwId, attachmentUrl) << std::endl;
 					}
 				}
 			}
@@ -217,7 +221,7 @@ int main(int argc, char *argv[])
 					std::string inputJson = analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), completed));
 					hwId = analyzeJson::index2hwId(inputJson, listIndex);
 					stuHwId = analyzeJson::index2stuHwId(inputJson, listIndex);
-					std::cout << submission::revisionPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), stuHwId, login::finalout2userId(login::stuLoginPipeline(stuUsername, stuPasswd))) << std::endl;
+					std::cout << submission::revisionPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), stuHwId, login::finalout2userId(login::stuLoginPipeline(stuUsername, stuPasswd)), attachmentUrl) << std::endl;
 				}
 				else
 				{
@@ -228,7 +232,7 @@ int main(int argc, char *argv[])
 					}
 					else
 					{
-						std::cout << submission::revisionPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), stuHwId, login::finalout2userId(login::stuLoginPipeline(stuUsername, stuPasswd))) << std::endl;
+						std::cout << submission::revisionPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), stuHwId, login::finalout2userId(login::stuLoginPipeline(stuUsername, stuPasswd)), attachmentUrl) << std::endl;
 					}
 				}
 			}
@@ -247,11 +251,11 @@ int main(int argc, char *argv[])
 					std::string inputJson = analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), completed));
 					hwId = analyzeJson::index2hwId(inputJson, listIndex);
 					stuHwId = analyzeJson::index2stuHwId(inputJson, listIndex);
-					std::cout << submission::automationPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), login::finalout2userId(login::stuLoginPipeline(stuUsername, stuPasswd)), stuHwId) << std::endl;
+					std::cout << submission::automationPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), login::finalout2userId(login::stuLoginPipeline(stuUsername, stuPasswd)), stuHwId, attachmentUrl) << std::endl;
 				}
 				else
 				{
-					std::cout << submission::automationPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), login::finalout2userId(login::stuLoginPipeline(stuUsername, stuPasswd)), stuHwId) << std::endl;
+					std::cout << submission::automationPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), login::finalout2userId(login::stuLoginPipeline(stuUsername, stuPasswd)), stuHwId, attachmentUrl) << std::endl;
 				}
 			}
 			break;
