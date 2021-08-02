@@ -40,13 +40,13 @@ int main(int argc, char *argv[])
 					   (clipp::required("-hi", "--homework-id") & clipp::value("hwId", hwId) % "Homework ID") | clipp::required("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's Psssword" & (clipp::required("--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index"),
 					   clipp::option("--already-done").set(completed, true).doc("use the list of completed homeworks"));
 
-	auto redoMode = (clipp::command("redoHomework").set(selected, mode::redoHomework),
+	auto redoMode = (clipp::command("redo").set(selected, mode::redoHomework),
 					 clipp::required("-tch", "--teacher-login") & clipp::value("tchUsername", tchUsername) % "ANY Teacher's Username" & clipp::value("tchPasswd", tchPasswd) % "THE Teacher's encoded Password",
 					 clipp::required("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's Psssword",
 					 (clipp::required("-hi", "--homework-id") & clipp::value("hwId", hwId) % "Homework ID") | clipp::required("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's Psssword" & (clipp::required("--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index"),
 					 clipp::option("--already-done").set(completed, true).doc("use the list of completed homeworks"));
 
-	auto submitMode = (clipp::command("submitHomework").set(selected, mode::submitHomework),
+	auto submitMode = (clipp::command("autoSubmit").set(selected, mode::submitHomework),
 					   clipp::required("-tch", "--teacher-login") & clipp::value("tchUsername", tchUsername) % "ANY Teacher's Username" & clipp::value("tchPasswd", tchPasswd) % "THE Teacher's encoded Password",
 					   clipp::required("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's Psssword",
 					   (clipp::required("-hi", "--homework-ids") & clipp::value("hwId", hwId) % "Homework ID" & clipp::value("stuHwId", stuHwId) % "Student Homework ID") | (clipp::required("--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index"),
