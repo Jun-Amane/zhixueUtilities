@@ -35,27 +35,27 @@ int main(int argc, char *argv[])
 	bool completed = false;
 
 	auto getListMode = (clipp::command("getList").set(selected, mode::getList),
-						clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's Psssword",
+						clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's encoded Psssword",
 						clipp::option("--already-done").set(completed, true).doc("use the list of completed homeworks"));
 
 	auto getAnsMode = (clipp::command("getAns").set(selected, mode::getAns),
 					   clipp::option("-tch", "--teacher-login") & clipp::value("tchUsername", tchUsername) % "ANY Teacher's Username" & clipp::value("tchPasswd", tchPasswd) % "THE Teacher's encoded Password",
 					   clipp::option("-hi", "--homework-id") & clipp::value("hwId", hwId) % "Homework ID",
-					   clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's Psssword",
+					   clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's encoded Psssword",
 					   clipp::option("--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index",
 					   clipp::option("--already-done").set(completed, true).doc("use the list of completed homeworks"));
 
 	auto redoMode = (clipp::command("redo").set(selected, mode::redoHomework),
 					 clipp::option("-tch", "--teacher-login") & clipp::value("tchUsername", tchUsername) % "ANY Teacher's Username" & clipp::value("tchPasswd", tchPasswd) % "THE Teacher's encoded Password",
-					 clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's Psssword",
+					 clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's encoded Psssword",
 					 clipp::option("-hi", "--homework-id") & clipp::value("hwId", hwId) % "Homework ID",
-					 clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's Psssword",
+					 clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's encoded Psssword",
 					 clipp::option("--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index",
 					 clipp::option("--already-done").set(completed, true).doc("use the list of completed homeworks"));
 
 	auto submitMode = (clipp::command("autoSubmit").set(selected, mode::submitHomework),
 					   clipp::option("-tch", "--teacher-login") & clipp::value("tchUsername", tchUsername) % "ANY Teacher's Username" & clipp::value("tchPasswd", tchPasswd) % "THE Teacher's encoded Password",
-					   clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's Psssword",
+					   clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's encoded Psssword",
 					   clipp::option("-hi", "--homework-ids") & clipp::value("hwId", hwId) % "Homework ID" & clipp::value("stuHwId", stuHwId) % "Student Homework ID",
 					   clipp::option("--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index",
 					   clipp::option("--with-attachment") & clipp::value("attachmentUrl", attachmentUrl) % "Attachmenet URL, only supports pics, maybe",
@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 
 	auto reviseMode = (clipp::command("autoRevise").set(selected, mode::autoRevise),
 					   clipp::option("-tch", "--teacher-login") & clipp::value("tchUsername", tchUsername) % "ANY Teacher's Username" & clipp::value("tchPasswd", tchPasswd) % "THE Teacher's encoded Password",
-					   clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's Psssword",
+					   clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's encoded Psssword",
 					   clipp::option("-hi", "--homework-ids") & clipp::value("hwId", hwId) % "Homework ID" & clipp::value("stuHwId", stuHwId) % "Student Homework ID",
 					   clipp::option("--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index",
 					   clipp::option("--with-attachment") & clipp::value("attachmentUrl", attachmentUrl) % "Attachmenet URL, only supports pics, maybe",
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 
 	auto autoMode = (clipp::command("automation").set(selected, mode::automation),
 					 clipp::option("-tch", "--teacher-login") & clipp::value("tchUsername", tchUsername) % "ANY Teacher's Username" & clipp::value("tchPasswd", tchPasswd) % "THE Teacher's encoded Password",
-					 clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's Psssword",
+					 clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's encoded Psssword",
 					 clipp::option("-hi", "--homework-ids") & clipp::value("hwId", hwId) % "Homework ID" & clipp::value("stuHwId", stuHwId) % "Student Homework ID",
 					 clipp::option("--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index",
 					 clipp::option("--with-attachment") & clipp::value("attachmentUrl", attachmentUrl) % "Attachmenet URL, only supports pics, maybe",
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
 
 	auto availMode = (clipp::command("availablize").set(selected, mode::availablize),
 					  clipp::option("-tch", "--teacher-login") & clipp::value("tchUsername", tchUsername) % "ANY Teacher's Username" & clipp::value("tchPasswd", tchPasswd) % "THE Teacher's encoded Password",
-					  clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's Psssword",
+					  clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's encoded Psssword",
 					  clipp::option("-hi", "--homework-id") & clipp::value("hwId", hwId) % "Homework ID",
 					  clipp::option("--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index",
 					  clipp::option("--already-done").set(completed, true).doc("use the list of completed homeworks"));
