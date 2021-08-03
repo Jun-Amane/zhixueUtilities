@@ -10,12 +10,16 @@
 #define casLoginUrl "https://www.zhixue.com/container/app/login/casLogin"
 #define uniteLoginUrl "https://app.zhixue.com/appteacher/home/uniteLogin?"
 #define reviseQuestionUrl "https://mhw.zhixue.com/hw/revise/questions"
+#define hwDetailUrl "https://mhw.zhixue.com/hw/homework/detail"
+#define updateHwUrl "https://mhw.zhixue.com/hw/manage/homework/update"
 
 namespace analyzeJson
 {
     std::string analyzeAnsJson(std::string inputJson);
     std::string analyzeHwListJson(std::string inputJson);
+
     int analyzeIfSuccess(std::string str);
+
     std::string index2stuHwId(std::string inputJson, std::string index);
     std::string index2hwId(std::string inputJson, std::string index);
 }
@@ -29,18 +33,25 @@ namespace reqData
     std::string redoHomework(std::string tchToken, std::string userId, std::string hwId);
 
     std::string sendSubbmission(std::string POSTFIELDS, std::string stuToken);
+
     std::string casLogin(std::string userId, std::string at);
     std::string loginApi(std::string username, std::string passwd, std::string appId, std::string ncetAppId);
     std::string uniteLogin(std::string userId, std::string at);
+
     std::string getReviseQuestion(std::string stuId, std::string hwId, std::string stuToken);
+
+    std::string getHwDetail(std::string tchToken, std::string hwId);
+    std::string updateHw(std::string tchToken, std::string POSTFIELDS);
 }
 
 namespace submission
 {
     std::string prepareSubmJson(std::string inputStr, std::string stuToken, std::string stuHwId, std::string attachmentUrl);
     std::string submissionTemplate(std::string stuToken, std::string stuHwId);
+
     std::string prepareReviJson(std::string inputStr, std::string stuToken, std::string stuHwId, std::string stuId, std::string hwId, std::string attachmentUrl);
     std::string revisionTemplate(std::string stuToken, std::string stuHwId);
+
     std::string submissionPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuHwId, std::string attachmentUrl);
     std::string automationPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuId, std::string stuHwId, std::string attachmentUrl);
     std::string revisionPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuHwId, std::string stuId, std::string attachmentUrl);
@@ -54,4 +65,10 @@ namespace login
     std::string tchLoginPipeline(std::string username, std::string passwd);
     std::string finalout2Token(std::string inputStr);
     std::string finalout2userId(std::string inputStr);
+}
+
+namespace updateHw
+{
+    std::string prepareUpdateJson(std::string inputStr);
+    std::string updateHwPipeline(std::string tchToken, std::string hwId);
 }

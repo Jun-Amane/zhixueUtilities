@@ -27,7 +27,7 @@ namespace reqData
 
 		CURL *curl;
 		CURLcode res;
-		struct curl_slist *headers = NULL;
+		struct curl_slist *headers = nullptr;
 		std::string str;
 
 		headers = curl_slist_append(headers, len.c_str());
@@ -64,7 +64,7 @@ namespace reqData
 
 		CURL *curl;
 		CURLcode res;
-		struct curl_slist *headers = NULL;
+		struct curl_slist *headers = nullptr;
 		std::string str;
 
 		curl = curl_easy_init();
@@ -90,7 +90,7 @@ namespace reqData
 
 		CURL *curl;
 		CURLcode res;
-		struct curl_slist *headers = NULL;
+		struct curl_slist *headers = nullptr;
 		std::string str;
 
 		headers = curl_slist_append(headers, len.c_str());
@@ -129,7 +129,7 @@ namespace reqData
 
 		CURL *curl;
 		CURLcode res;
-		struct curl_slist *headers = NULL;
+		struct curl_slist *headers = nullptr;
 		std::string str;
 
 		headers = curl_slist_append(headers, len.c_str());
@@ -168,7 +168,7 @@ namespace reqData
 
 		CURL *curl;
 		CURLcode res;
-		struct curl_slist *headers = NULL;
+		struct curl_slist *headers = nullptr;
 		std::string str;
 
 		headers = curl_slist_append(headers, len.c_str());
@@ -197,7 +197,7 @@ namespace reqData
 
 		CURL *curl;
 		CURLcode res;
-		struct curl_slist *headers = NULL;
+		struct curl_slist *headers = nullptr;
 		std::string str;
 
 		headers = curl_slist_append(headers, len.c_str());
@@ -240,7 +240,7 @@ namespace reqData
 
 		CURL *curl;
 		CURLcode res;
-		struct curl_slist *headers = NULL;
+		struct curl_slist *headers = nullptr;
 		std::string str;
 
 		headers = curl_slist_append(headers, len.c_str());
@@ -283,7 +283,7 @@ namespace reqData
 
 		CURL *curl;
 		CURLcode res;
-		struct curl_slist *headers = NULL;
+		struct curl_slist *headers = nullptr;
 		std::string str;
 
 		headers = curl_slist_append(headers, len.c_str());
@@ -304,6 +304,76 @@ namespace reqData
 		curl_easy_cleanup(curl);
 
 		return str;
+	}
+
+	std::string getHwDetail(std::string tchToken, std::string hwId)
+	{
+
+		std::string POSTFIELDS = "{\"base\":{\"appId\":\"OAXI57PG\",\"appVersion\":\"1.17.1877\",\"packageName\":\"com.iflytek.elpmobile.marktool\",\"sysType\":\"Android\",\"sysVersion\":\"\",\"udid\":\"00:00:00:00:00:00\"},\"params\":{\"hwId\":\"" + hwId + "\"}}";
+		std::string len = "Content-Length:" + std::__cxx11::to_string(POSTFIELDS.size());
+		std::string auth = "Authorization:" + tchToken;
+
+		CURL *curl;
+		CURLcode res;
+		struct curl_slist *headers = nullptr;
+		std::string str;
+
+		headers = curl_slist_append(headers, len.c_str());
+		headers = curl_slist_append(headers, auth.c_str());
+		headers = curl_slist_append(headers, "Content-Type:application/json");
+
+		curl = curl_easy_init();
+		curl_easy_setopt(curl, CURLOPT_URL, hwDetailUrl);
+		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+		curl_easy_setopt(curl, CURLOPT_POSTFIELDS, POSTFIELDS.c_str());
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, CurlWrite_CallbackFunc_StdString);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &str);
+		curl_easy_setopt(curl, CURLOPT_POST, 1);
+		curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
+		//curl_easy_setopt(curl, CURLOPT_HEADER, 1);
+		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+		res = curl_easy_perform(curl);
+		curl_easy_cleanup(curl);
+
+		return str;
+	}
+
+	std::string updateHw(std::string tchToken, std::string POSTFIELDS)
+	{
+		std::string len = "Content-Length:" + std::__cxx11::to_string(POSTFIELDS.size());
+		std::string auth = "Authorization:" + tchToken;
+
+		CURL *curl;
+		CURLcode res;
+		struct curl_slist *headers = nullptr;
+		std::string str;
+
+		headers = curl_slist_append(headers, len.c_str());
+		headers = curl_slist_append(headers, auth.c_str());
+		headers = curl_slist_append(headers, "Content-Type:application/json");
+
+		curl = curl_easy_init();
+		curl_easy_setopt(curl, CURLOPT_URL, updateHwUrl);
+		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+		curl_easy_setopt(curl, CURLOPT_POSTFIELDS, POSTFIELDS.c_str());
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, CurlWrite_CallbackFunc_StdString);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &str);
+		curl_easy_setopt(curl, CURLOPT_POST, 1);
+		curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
+		//curl_easy_setopt(curl, CURLOPT_HEADER, 1);
+		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+		res = curl_easy_perform(curl);
+		curl_easy_cleanup(curl);
+
+		int rtn = analyzeJson::analyzeIfSuccess(str);
+		if (rtn == 0)
+		{
+			return ("成功！");
+		}
+		else
+		{
+			return str;
+		}
 	}
 
 }

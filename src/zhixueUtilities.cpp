@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
 		submitHomework,
 		automation,
 		autoRevise,
+		availablize,
 		help
 	};
 	mode selected = mode::help;
@@ -57,7 +58,7 @@ int main(int argc, char *argv[])
 					   clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's Psssword",
 					   clipp::option("-hi", "--homework-ids") & clipp::value("hwId", hwId) % "Homework ID" & clipp::value("stuHwId", stuHwId) % "Student Homework ID",
 					   clipp::option("--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index",
-					   clipp::option("--with-attachment")& clipp::value("attachmentUrl", attachmentUrl) % "Attachmenet URL, only supports pics, maybe",
+					   clipp::option("--with-attachment") & clipp::value("attachmentUrl", attachmentUrl) % "Attachmenet URL, only supports pics, maybe",
 					   clipp::option("--already-done").set(completed, true).doc("use the list of completed homeworks"));
 
 	auto reviseMode = (clipp::command("autoRevise").set(selected, mode::autoRevise),
@@ -65,7 +66,7 @@ int main(int argc, char *argv[])
 					   clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's Psssword",
 					   clipp::option("-hi", "--homework-ids") & clipp::value("hwId", hwId) % "Homework ID" & clipp::value("stuHwId", stuHwId) % "Student Homework ID",
 					   clipp::option("--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index",
-					   clipp::option("--with-attachment")& clipp::value("attachmentUrl", attachmentUrl) % "Attachmenet URL, only supports pics, maybe",
+					   clipp::option("--with-attachment") & clipp::value("attachmentUrl", attachmentUrl) % "Attachmenet URL, only supports pics, maybe",
 					   clipp::option("--already-done").set(completed, true).doc("use the list of completed homeworks"));
 
 	auto autoMode = (clipp::command("automation").set(selected, mode::automation),
@@ -73,12 +74,19 @@ int main(int argc, char *argv[])
 					 clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's Psssword",
 					 clipp::option("-hi", "--homework-ids") & clipp::value("hwId", hwId) % "Homework ID" & clipp::value("stuHwId", stuHwId) % "Student Homework ID",
 					 clipp::option("--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index",
-					 clipp::option("--with-attachment")& clipp::value("attachmentUrl", attachmentUrl) % "Attachmenet URL, only supports pics, maybe",
+					 clipp::option("--with-attachment") & clipp::value("attachmentUrl", attachmentUrl) % "Attachmenet URL, only supports pics, maybe",
 					 clipp::option("--already-done").set(completed, true).doc("use the list of completed homeworks"));
 
-	auto cli = ((getListMode | getAnsMode | redoMode | submitMode | reviseMode | autoMode | clipp::command("help").set(selected, mode::help)),
+	auto availMode = (clipp::command("availablize").set(selected, mode::availablize),
+					  clipp::option("-tch", "--teacher-login") & clipp::value("tchUsername", tchUsername) % "ANY Teacher's Username" & clipp::value("tchPasswd", tchPasswd) % "THE Teacher's encoded Password",
+					  clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's Psssword",
+					  clipp::option("-hi", "--homework-id") & clipp::value("hwId", hwId) % "Homework ID",
+					  clipp::option("--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index",
+					  clipp::option("--already-done").set(completed, true).doc("use the list of completed homeworks"));
+
+	auto cli = ((getListMode | getAnsMode | redoMode | submitMode | reviseMode | autoMode | availMode | clipp::command("help").set(selected, mode::help)),
 				clipp::option("-v", "--version").call([]
-													  { std::cout << "version 6.4final" << std::endl; })
+													  { std::cout << "version 1.28b" << std::endl; })
 					.doc("show version"),
 				clipp::option("-h", "--help").set(selected, mode::help).doc("show this help message"));
 
@@ -256,6 +264,43 @@ int main(int argc, char *argv[])
 				else
 				{
 					std::cout << submission::automationPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), login::finalout2userId(login::stuLoginPipeline(stuUsername, stuPasswd)), stuHwId, attachmentUrl) << std::endl;
+				}
+			}
+			break;
+
+		case mode::availablize:
+			if (tchUsername.empty() || tchPasswd.empty())
+			{
+				std::cout << "ログインに必要な情報が不足しています。" << std::endl;
+				break;
+			}
+			else
+			{
+				if (useIndex)
+				{
+					if (stuUsername.empty() || stuPasswd.empty())
+					{
+						std::cout << "ログインに必要な情報が不足しています。" << std::endl;
+						break;
+					}
+					else
+					{
+						std::string inputJson = analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), completed));
+						hwId = analyzeJson::index2hwId(inputJson, listIndex);
+						std::cout << updateHw::updateHwPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId) << std::endl;
+					}
+				}
+				else
+				{
+					if (hwId.empty() || stuHwId.empty())
+					{
+						std::cout << "クエリに必要な情報が不足しています。" << std::endl;
+						break;
+					}
+					else
+					{
+						std::cout << updateHw::updateHwPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId) << std::endl;
+					}
 				}
 			}
 			break;
