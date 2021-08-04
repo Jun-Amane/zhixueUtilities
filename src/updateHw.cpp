@@ -25,7 +25,7 @@ namespace updateHw
                 finalout["params"]["isAllowMakeup"] = true;
                 finalout["params"]["isUploadProcess"] = root["result"]["isUploadProcess"].asBool();
                 finalout["params"]["phaseCode"] = root["result"]["phaseCode"].asString();
-                if (root["result"]["publishAnswerTime"].isInt())
+                if (root["result"]["publishAnswerTime"].isInt64())
                 {
                     finalout["params"]["publishAnswerTime"] = root["result"]["publishAnswerTime"].asUInt64();
                 }
