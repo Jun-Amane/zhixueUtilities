@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
 
 	bool useIndex = false;
 	bool completed = false;
+	bool isClkHw = false;
 
 	auto getListMode = (clipp::command("getList").set(selected, mode::getList),
 						clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's encoded Psssword",
@@ -51,7 +52,8 @@ int main(int argc, char *argv[])
 					 clipp::option("-hi", "--homework-id") & clipp::value("hwId", hwId) % "Homework ID",
 					 clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's encoded Psssword",
 					 clipp::option("--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index",
-					 clipp::option("--already-done").set(completed, true).doc("use the list of completed homeworks"));
+					 clipp::option("--already-done").set(completed, true).doc("use the list of completed homeworks"),
+					 clipp::option("--is-clock-homework").set(isClkHw, true).doc("redo the clock homework"));
 
 	auto submitMode = (clipp::command("autoSubmit").set(selected, mode::submitHomework),
 					   clipp::option("-tch", "--teacher-login") & clipp::value("tchUsername", tchUsername) % "ANY Teacher's Username" & clipp::value("tchPasswd", tchPasswd) % "THE Teacher's encoded Password",
@@ -86,7 +88,7 @@ int main(int argc, char *argv[])
 
 	auto cli = ((getListMode | getAnsMode | redoMode | submitMode | reviseMode | autoMode | availMode | clipp::command("help").set(selected, mode::help)),
 				clipp::option("-v", "--version").call([]
-													  { std::cout << "version 1.28b" << std::endl; })
+													  { std::cout << "version 1.28c" << std::endl; })
 					.doc("show version"),
 				clipp::option("-h", "--help").set(selected, mode::help).doc("show this help message"));
 
@@ -171,18 +173,19 @@ int main(int argc, char *argv[])
 				{
 					std::string inputJson = analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), completed));
 					hwId = analyzeJson::index2hwId(inputJson, listIndex);
-					std::cout << reqData::redoHomework(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), login::finalout2userId(login::stuLoginPipeline(stuUsername, stuPasswd)), hwId) << std::endl;
+					stuHwId = analyzeJson::index2stuHwId(inputJson, listIndex);
+					std::cout << reqData::redoHomework(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), login::finalout2userId(login::stuLoginPipeline(stuUsername, stuPasswd)), hwId, isClkHw, stuHwId) << std::endl;
 				}
 				else
 				{
-					if (hwId.empty())
+					if (hwId.empty() || stuHwId.empty())
 					{
 						std::cout << "クエリに必要な情報が不足しています。" << std::endl;
 						break;
 					}
 					else
 					{
-						std::cout << reqData::redoHomework(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), login::finalout2userId(login::stuLoginPipeline(stuUsername, stuPasswd)), hwId) << std::endl;
+						std::cout << reqData::redoHomework(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), login::finalout2userId(login::stuLoginPipeline(stuUsername, stuPasswd)), hwId, isClkHw, stuHwId) << std::endl;
 					}
 				}
 			}

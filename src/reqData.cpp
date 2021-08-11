@@ -81,10 +81,21 @@ namespace reqData
 		return str;
 	}
 
-	std::string redoHomework(std::string tchToken, std::string stuId, std::string hwId)
+	std::string redoHomework(std::string tchToken, std::string stuToken, std::string stuId, std::string hwId, bool isClkHw, std::string stuHwId)
 	{
 
-		std::string POSTFIELDS = "{\"base\":{\"Authorization\":\"" + tchToken + "\",\"appId\":\"OAXI57PG\",\"appVersion\":\"1.17.1877\",\"packageName\":\"com.iflytek.elpmobile.marktool\",\"sysType\":\"Android\",\"sysVersion\":\"Nashi\",\"udid\":\"\",\"userId\":\"0\",\"utag\":\"\"},\"params\":{\"classId\":\"0\",\"hwId\":\"" + hwId + "\",\"redoReason\":\"Nashi\",\"studentId\":\"" + stuId + "\"},\"token\":\"" + tchToken + "\"}";
+		std::string POSTFIELDS = "";
+		std::string url = "";
+		if (isClkHw)
+		{
+			POSTFIELDS = "{\"base\":{\"Authorization\":\"" + tchToken + "\",\"appId\":\"OAXI57PG\",\"appVersion\":\"1.17.1877\",\"packageName\":\"com.iflytek.elpmobile.marktool\",\"sysType\":\"Android\",\"sysVersion\":\"unknown\",\"udid\":\"\",\"userId\":\"0\",\"utag\":\"\"},\"params\":{\"classId\":\"0\",\"redoReason\":\"Nashi\",\"clockRecordId\":\"" + analyzeJson::clkHwDetail2clockRecordId(reqData::getClkHwDetail(stuToken, hwId, stuHwId)) + "\",\"hwId\":\"" + hwId + "\",\"stuHwId\":\"" + stuHwId + "\",\"answerDate\":\"\"},\"token\":\"" + tchToken + "\"}";
+			url = clkHwRedoUrl;
+		}
+		else
+		{
+			POSTFIELDS = "{\"base\":{\"Authorization\":\"" + tchToken + "\",\"appId\":\"OAXI57PG\",\"appVersion\":\"1.17.1877\",\"packageName\":\"com.iflytek.elpmobile.marktool\",\"sysType\":\"Android\",\"sysVersion\":\"Nashi\",\"udid\":\"\",\"userId\":\"0\",\"utag\":\"\"},\"params\":{\"classId\":\"0\",\"hwId\":\"" + hwId + "\",\"redoReason\":\"Nashi\",\"studentId\":\"" + stuId + "\"},\"token\":\"" + tchToken + "\"}";
+			url = redoURL;
+		}
 		std::string auth = "Authorization:" + tchToken;
 		std::string len = "Content-Length:" + std::__cxx11::to_string(POSTFIELDS.size());
 
@@ -98,7 +109,7 @@ namespace reqData
 		headers = curl_slist_append(headers, "Content-Type:application/json");
 
 		curl = curl_easy_init();
-		curl_easy_setopt(curl, CURLOPT_URL, redoURL);
+		curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 		curl_easy_setopt(curl, CURLOPT_POSTFIELDS, POSTFIELDS.c_str());
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, CurlWrite_CallbackFunc_StdString);
@@ -374,6 +385,37 @@ namespace reqData
 		{
 			return str;
 		}
+	}
+
+	std::string getClkHwDetail(std::string stuToken, std::string hwId, std::string stuHwId)
+	{
+		std::string POSTFIELDS = "{\"base\":{\"Authorization\":\"" + stuToken + "\",\"appId\":\"OAXI57PG\",\"appVersion\":\"2.0.1542\",\"packageName\":\"com.iflytek.elpmobile.student\",\"sysType\":\"Android\",\"sysVersion\":\"unknown\",\"udid\":\"\",\"userId\":\"0\",\"utag\":\"\"},\"params\":{\"hwId\":\"" + hwId + "\",\"stuHwId\":\"" + stuHwId + "\"}}";
+		std::string len = "Content-Length:" + std::__cxx11::to_string(POSTFIELDS.size());
+		std::string auth = "Authorization:" + stuToken;
+
+		CURL *curl;
+		CURLcode res;
+		struct curl_slist *headers = nullptr;
+		std::string str;
+
+		headers = curl_slist_append(headers, len.c_str());
+		headers = curl_slist_append(headers, auth.c_str());
+		headers = curl_slist_append(headers, "Content-Type:application/json");
+
+		curl = curl_easy_init();
+		curl_easy_setopt(curl, CURLOPT_URL, clkHWDetailUrl);
+		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+		curl_easy_setopt(curl, CURLOPT_POSTFIELDS, POSTFIELDS.c_str());
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, CurlWrite_CallbackFunc_StdString);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &str);
+		curl_easy_setopt(curl, CURLOPT_POST, 1);
+		curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
+		//curl_easy_setopt(curl, CURLOPT_HEADER, 1);
+		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+		res = curl_easy_perform(curl);
+		curl_easy_cleanup(curl);
+
+		return str;
 	}
 
 }

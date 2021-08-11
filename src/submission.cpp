@@ -115,7 +115,7 @@ namespace submission
         std::string rtn = "Submissing\n" + reqData::sendSubbmission(submission::prepareSubmJson(reqData::postAnsJson(tchToken, hwId), stuToken, stuHwId, attachmentUrl), stuToken);
         //std::string rtn = submission::prepareSubmJson(reqData::postAnsJson(tchToken, hwId), stuToken, stuHwId);
         rtn += "\nRejecting\n";
-        rtn += reqData::redoHomework(tchToken, stuId, hwId);
+        rtn += reqData::redoHomework(tchToken, stuToken, stuId, hwId, false, stuHwId);
         return rtn;
     }
 

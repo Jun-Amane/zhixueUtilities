@@ -169,4 +169,19 @@ namespace analyzeJson
 			return "";
 		}
 	}
+	std::string clkHwDetail2clockRecordId(std::string inputJson)
+	{
+		Json::Reader reader;
+		Json::Value root;
+		if (reader.parse(inputJson.c_str(), root))
+		{
+
+			const Json::Value hwClockRecordPreviewResponses = root["result"]["hwClockRecordPreviewResponses"];
+			return hwClockRecordPreviewResponses[0]["clockRecordId"].asString();
+		}
+		else
+		{
+			return "";
+		}
+	}
 }

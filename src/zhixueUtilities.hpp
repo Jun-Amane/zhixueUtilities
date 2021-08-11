@@ -12,6 +12,8 @@
 #define reviseQuestionUrl "https://mhw.zhixue.com/hw/revise/questions"
 #define hwDetailUrl "https://mhw.zhixue.com/hw/homework/detail"
 #define updateHwUrl "https://mhw.zhixue.com/hw/manage/homework/update"
+#define clkHWDetailUrl "https://mhw.zhixue.com/hw/clock/answer/getClockHomeworkDetail"
+#define clkHwRedoUrl "https://mhw.zhixue.com/hw/clock/comment/redo"
 
 namespace analyzeJson
 {
@@ -22,6 +24,7 @@ namespace analyzeJson
 
     std::string index2stuHwId(std::string inputJson, std::string index);
     std::string index2hwId(std::string inputJson, std::string index);
+    std::string clkHwDetail2clockRecordId(std::string inputJson);
 }
 
 namespace reqData
@@ -30,7 +33,8 @@ namespace reqData
     std::string postAnsJson(std::string tchToken, std::string hwId);
 
     std::string getHwListJson(std::string stuToken, bool completed);
-    std::string redoHomework(std::string tchToken, std::string userId, std::string hwId);
+    std::string redoHomework(std::string tchToken, std::string stuToken, std::string userId, std::string hwId, bool isClkHw, std::string stuHwId);
+    std::string getClkHwDetail(std::string stuToken, std::string hwId, std::string stuHwId);
 
     std::string sendSubbmission(std::string POSTFIELDS, std::string stuToken);
 
