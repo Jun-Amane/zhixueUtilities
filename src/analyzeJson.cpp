@@ -184,4 +184,18 @@ namespace analyzeJson
 			return "";
 		}
 	}
+	std::string format(std::string inputJson)
+	{
+		Json::Reader reader;
+		Json::Value root;
+		if (reader.parse(inputJson.c_str(), root))
+		{
+
+			return root.toStyledString();
+		}
+		else
+		{
+			return "";
+		}
+	}
 }

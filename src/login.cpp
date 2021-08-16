@@ -82,6 +82,7 @@ namespace login
                     finalout["name"] = root["result"]["userInfo"]["name"].asString();
                     finalout["userId"] = root["result"]["userInfo"]["id"].asString();
                     finalout["token"] = root["result"]["token"].asString();
+                    finalout["clazzId"] = root["result"]["clazzInfo"]["id"].asString();
                 }
                 else
                 {
@@ -166,6 +167,20 @@ namespace login
         if (reader.parse(inputStr.c_str(), root))
         {
             return root["userId"].asString();
+        }
+        else
+        {
+            return "";
+        }
+    }
+    std::string finalout2clazzId(std::string inputStr)
+    {
+        Json::Reader reader;
+        Json::Value root;
+
+        if (reader.parse(inputStr.c_str(), root))
+        {
+            return root["clazzId"].asString();
         }
         else
         {

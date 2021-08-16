@@ -15,6 +15,9 @@
 #define clkHWDetailUrl "https://mhw.zhixue.com/hw/clock/answer/getClockHomeworkDetail"
 #define clkHwRedoUrl "https://mhw.zhixue.com/hw/clock/comment/redo"
 
+#define indexOverViewUrl "https://mhw.zhixue.com/hwreport/class/indexOverView"
+#define listQuestionViewUrl "https://mhw.zhixue.com/hwreport/question/listQuestionView" 
+
 namespace analyzeJson
 {
     std::string analyzeAnsJson(std::string inputJson);
@@ -25,6 +28,8 @@ namespace analyzeJson
     std::string index2stuHwId(std::string inputJson, std::string index);
     std::string index2hwId(std::string inputJson, std::string index);
     std::string clkHwDetail2clockRecordId(std::string inputJson);
+
+    std::string format(std::string inputJson);
 }
 
 namespace reqData
@@ -46,6 +51,9 @@ namespace reqData
 
     std::string getHwDetail(std::string tchToken, std::string hwId);
     std::string updateHw(std::string tchToken, std::string POSTFIELDS);
+
+    std::string showHwSubmitDetail(std::string tchToken, std::string hwId, std::string clazzId);
+    std::string listQuestionView(std::string tchToken, std::string hwId, std::string clazzId);
 }
 
 namespace submission
@@ -69,6 +77,7 @@ namespace login
     std::string tchLoginPipeline(std::string username, std::string passwd);
     std::string finalout2Token(std::string inputStr);
     std::string finalout2userId(std::string inputStr);
+    std::string finalout2clazzId(std::string inputStr);
 }
 
 namespace updateHw

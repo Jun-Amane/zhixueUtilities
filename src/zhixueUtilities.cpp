@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
 		automation,
 		autoRevise,
 		availablize,
+		showSubmitDetail,
 		help
 	};
 	mode selected = mode::help;
@@ -86,7 +87,13 @@ int main(int argc, char *argv[])
 					  clipp::option("--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index",
 					  clipp::option("--already-done").set(completed, true).doc("use the list of completed homeworks"));
 
-	auto cli = ((getListMode | getAnsMode | redoMode | submitMode | reviseMode | autoMode | availMode | clipp::command("help").set(selected, mode::help)),
+	auto showDeatilMode = (clipp::command("showSubmitDetail").set(selected, mode::showSubmitDetail),
+						   clipp::option("-tch", "--teacher-login") & clipp::value("tchUsername", tchUsername) % "ANY Teacher's Username" & clipp::value("tchPasswd", tchPasswd) % "THE Teacher's encoded Password",
+						   clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's encoded Psssword",
+						   clipp::option("-hi", "--homework-ids") & clipp::value("hwId", hwId) % "Homework ID" & clipp::value("stuHwId", stuHwId) % "Student Homework ID",
+						   clipp::option("--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index");
+
+	auto cli = ((getListMode | getAnsMode | redoMode | submitMode | reviseMode | autoMode | availMode | showDeatilMode | clipp::command("help").set(selected, mode::help)),
 				clipp::option("-v", "--version").call([]
 													  { std::cout << "version 1.28c" << std::endl; })
 					.doc("show version"),
@@ -306,6 +313,33 @@ int main(int argc, char *argv[])
 					}
 				}
 			}
+			break;
+		case mode::showSubmitDetail:
+			if (tchUsername.empty() || tchPasswd.empty())
+			{
+				std::cout << "ログインに必要な情報が不足しています。" << std::endl;
+				break;
+			}
+			else
+			{
+				if (useIndex)
+				{
+					if (stuUsername.empty() || stuPasswd.empty())
+					{
+						std::cout << "ログインに必要な情報が不足しています。" << std::endl;
+						break;
+					}
+					else
+					{
+						hwId = analyzeJson::index2hwId(analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), completed)), listIndex);
+						std::cout << "此れは概要である。" << std::endl;
+						std::cout << analyzeJson::format(reqData::showHwSubmitDetail(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2clazzId(login::stuLoginPipeline(stuUsername, stuPasswd)))) << std::endl;
+						std::cout << "此れは詳細である。" << std::endl;
+						std::cout << analyzeJson::format(reqData::listQuestionView(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2clazzId(login::stuLoginPipeline(stuUsername, stuPasswd)))) << std::endl;
+					}
+				}
+			}
+
 			break;
 		case mode::help:
 			std::cout << clipp::make_man_page(cli, "zhixueUtilities") << std::endl;
