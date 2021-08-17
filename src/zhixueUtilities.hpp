@@ -17,6 +17,7 @@
 
 #define indexOverViewUrl "https://mhw.zhixue.com/hwreport/class/indexOverView"
 #define listQuestionViewUrl "https://mhw.zhixue.com/hwreport/question/listQuestionView" 
+#define getQuestionDetailUrl "https://mhw.zhixue.com/hwreport/question/getQuestionDetail"
 
 namespace analyzeJson
 {
@@ -54,6 +55,7 @@ namespace reqData
 
     std::string showHwSubmitDetail(std::string tchToken, std::string hwId, std::string clazzId);
     std::string listQuestionView(std::string tchToken, std::string hwId, std::string clazzId);
+    std::string getQuestionDetail(std::string tchToken, std::string hwId, std::string clazzId, std::string questionId);
 }
 
 namespace submission
@@ -80,8 +82,9 @@ namespace login
     std::string finalout2clazzId(std::string inputStr);
 }
 
-namespace updateHw
+namespace operateHw
 {
     std::string prepareUpdateJson(std::string inputStr);
     std::string updateHwPipeline(std::string tchToken, std::string hwId);
+    std::string showSubmitDetailPipeline(std::string tchToken, std::string hwId, std::string clazzId);
 }

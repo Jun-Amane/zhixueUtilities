@@ -20,21 +20,23 @@ int main(int argc, char *argv[])
 
 	//std::string tchToken;
 	//std::string stuToken;
-	std::string hwId = "";
+	std::string hwId;
 	//std::string stuId;
-	std::string stuHwId = "";
-	std::string listIndex = "";
-	std::string stuUsername = "";
-	std::string stuPasswd = "";
-	std::string tchUsername = "";
-	std::string tchPasswd = "";
-	std::string attachmentUrl = "";
+	std::string stuHwId;
+	std::string listIndex;
+	std::string stuUsername;
+	std::string stuPasswd;
+	std::string tchUsername;
+	std::string tchPasswd;
+	std::string attachmentUrl;
+	std::string clazzId;
 
 	//std::string finaloutStr;
 
 	bool useIndex = false;
 	bool completed = false;
 	bool isClkHw = false;
+	bool useClazzId = false;
 
 	auto getListMode = (clipp::command("getList").set(selected, mode::getList),
 						clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's encoded Psssword",
@@ -91,7 +93,9 @@ int main(int argc, char *argv[])
 						   clipp::option("-tch", "--teacher-login") & clipp::value("tchUsername", tchUsername) % "ANY Teacher's Username" & clipp::value("tchPasswd", tchPasswd) % "THE Teacher's encoded Password",
 						   clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's encoded Psssword",
 						   clipp::option("-hi", "--homework-ids") & clipp::value("hwId", hwId) % "Homework ID" & clipp::value("stuHwId", stuHwId) % "Student Homework ID",
-						   clipp::option("--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index");
+						   clipp::option("--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index",
+						   clipp::option("--already-done").set(completed, true).doc("use the list of completed homeworks"),
+						   clipp::option("--class-id").set(useClazzId, true).doc("Use givin class id") & clipp::value("clazzId", clazzId) % "Class ID");
 
 	auto cli = ((getListMode | getAnsMode | redoMode | submitMode | reviseMode | autoMode | availMode | showDeatilMode | clipp::command("help").set(selected, mode::help)),
 				clipp::option("-v", "--version").call([]
@@ -297,7 +301,7 @@ int main(int argc, char *argv[])
 					{
 						std::string inputJson = analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), completed));
 						hwId = analyzeJson::index2hwId(inputJson, listIndex);
-						std::cout << updateHw::updateHwPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId) << std::endl;
+						std::cout << operateHw::updateHwPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId) << std::endl;
 					}
 				}
 				else
@@ -309,7 +313,7 @@ int main(int argc, char *argv[])
 					}
 					else
 					{
-						std::cout << updateHw::updateHwPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId) << std::endl;
+						std::cout << operateHw::updateHwPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId) << std::endl;
 					}
 				}
 			}
@@ -331,11 +335,61 @@ int main(int argc, char *argv[])
 					}
 					else
 					{
-						hwId = analyzeJson::index2hwId(analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), completed)), listIndex);
+						if (!useClazzId)
+						{
+							hwId = analyzeJson::index2hwId(analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), completed)), listIndex);
+							/*
 						std::cout << "此れは概要である。" << std::endl;
 						std::cout << analyzeJson::format(reqData::showHwSubmitDetail(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2clazzId(login::stuLoginPipeline(stuUsername, stuPasswd)))) << std::endl;
 						std::cout << "此れは詳細である。" << std::endl;
 						std::cout << analyzeJson::format(reqData::listQuestionView(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2clazzId(login::stuLoginPipeline(stuUsername, stuPasswd)))) << std::endl;
+					*/
+							std::cout << operateHw::showSubmitDetailPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2clazzId(login::stuLoginPipeline(stuUsername, stuPasswd))) << std::endl;
+						}
+						else
+						{
+							if (!clazzId.empty())
+							{
+								hwId = analyzeJson::index2hwId(analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), completed)), listIndex);
+								std::cout << operateHw::showSubmitDetailPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, clazzId) << std::endl;
+							}
+							else
+							{
+								std::cout << "Classの情報が不足しています。" << std::endl;
+							}
+						}
+					}
+				}
+				else
+				{
+					if (hwId.empty())
+					{
+						std::cout << "クエリに必要な情報が不足しています。" << std::endl;
+						break;
+					}
+					else
+					{
+						/*
+						std::cout << "此れは概要である。" << std::endl;
+						std::cout << analyzeJson::format(reqData::showHwSubmitDetail(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2clazzId(login::stuLoginPipeline(stuUsername, stuPasswd)))) << std::endl;
+						std::cout << "此れは詳細である。" << std::endl;
+						std::cout << analyzeJson::format(reqData::listQuestionView(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2clazzId(login::stuLoginPipeline(stuUsername, stuPasswd)))) << std::endl;
+					*/
+						if (!useClazzId)
+						{
+							std::cout << operateHw::showSubmitDetailPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, login::finalout2clazzId(login::stuLoginPipeline(stuUsername, stuPasswd))) << std::endl;
+						}
+						else
+						{
+							if (!clazzId.empty())
+							{
+								std::cout << operateHw::showSubmitDetailPipeline(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), hwId, clazzId) << std::endl;
+							}
+							else
+							{
+								std::cout << "Classの情報が不足しています。" << std::endl;
+							}
+						}
 					}
 				}
 			}
