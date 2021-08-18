@@ -13,12 +13,14 @@ namespace analyzeJson
 		std::string subNum;
 		std::string child;
 		//std::string ans;
-		Json::Reader reader;
+		Json::CharReaderBuilder readerBuilder;
+		JSONCPP_STRING errs;
+		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
 		Json::Value root;
 
 		Json::Value finalout;
 
-		if (reader.parse(inputJson.c_str(), root))
+		if (reader->parse(inputJson.data(), inputJson.data() + inputJson.size(), &root, &errs))
 		{
 			const Json::Value sectionList = root["result"]["sectionList"];
 			for (unsigned int i = 0; i < sectionList.size(); i++)
@@ -76,7 +78,8 @@ namespace analyzeJson
 		}
 		else
 		{
-			printf("\nerr\n");
+			std::cout << errs << std::endl;
+			return "";
 		}
 
 		return finalout.toStyledString();
@@ -85,12 +88,14 @@ namespace analyzeJson
 	std::string analyzeHwListJson(std::string inputJson)
 	{
 
-		Json::Reader reader;
+		Json::CharReaderBuilder readerBuilder;
+		JSONCPP_STRING errs;
+		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
 		Json::Value root;
 		Json::Value finalout;
 		std::string index;
 
-		if (reader.parse(inputJson.c_str(), root))
+		if (reader->parse(inputJson.data(), inputJson.data() + inputJson.size(), &root, &errs))
 		{
 			//std::cout << root["result"]["list"].size() << std::endl;
 			const Json::Value list = root["result"]["list"];
@@ -115,7 +120,8 @@ namespace analyzeJson
 		}
 		else
 		{
-			printf("\nerr\n");
+			std::cout << errs << std::endl;
+			return "";
 		}
 
 		return finalout.toStyledString();
@@ -123,9 +129,11 @@ namespace analyzeJson
 
 	int analyzeIfSuccess(std::string str)
 	{
-		Json::Reader reader;
+		Json::CharReaderBuilder readerBuilder;
+		JSONCPP_STRING errs;
+		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
 		Json::Value root;
-		if (reader.parse(str.c_str(), root))
+		if (reader->parse(str.data(), str.data() + str.size(), &root, &errs))
 		{
 			if (root["code"].asString() == "000000" || root["code"].asString() == "success")
 			{
@@ -138,42 +146,51 @@ namespace analyzeJson
 		}
 		else
 		{
+			std::cout << errs << std::endl;
 			return -1;
 		}
 	}
 	std::string index2hwId(std::string inputJson, std::string index)
 	{
-		Json::Reader reader;
+		Json::CharReaderBuilder readerBuilder;
+		JSONCPP_STRING errs;
+		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
 		Json::Value root;
 		index = "インデックスは" + index + "である。";
-		if (reader.parse(inputJson.c_str(), root))
+		if (reader->parse(inputJson.data(), inputJson.data() + inputJson.size(), &root, &errs))
 		{
 			return root[index]["Homework ID"].asString();
 		}
 		else
 		{
+			std::cout << errs << std::endl;
 			return "";
 		}
 	}
 	std::string index2stuHwId(std::string inputJson, std::string index)
 	{
-		Json::Reader reader;
+		Json::CharReaderBuilder readerBuilder;
+		JSONCPP_STRING errs;
+		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
 		Json::Value root;
 		index = "インデックスは" + index + "である。";
-		if (reader.parse(inputJson.c_str(), root))
+		if (reader->parse(inputJson.data(), inputJson.data() + inputJson.size(), &root, &errs))
 		{
 			return root[index]["Student Homework ID"].asString();
 		}
 		else
 		{
+			std::cout << errs << std::endl;
 			return "";
 		}
 	}
 	std::string clkHwDetail2clockRecordId(std::string inputJson)
 	{
-		Json::Reader reader;
+		Json::CharReaderBuilder readerBuilder;
+		JSONCPP_STRING errs;
+		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
 		Json::Value root;
-		if (reader.parse(inputJson.c_str(), root))
+		if (reader->parse(inputJson.data(), inputJson.data() + inputJson.size(), &root, &errs))
 		{
 
 			const Json::Value hwClockRecordPreviewResponses = root["result"]["hwClockRecordPreviewResponses"];
@@ -181,20 +198,24 @@ namespace analyzeJson
 		}
 		else
 		{
+			std::cout << errs << std::endl;
 			return "";
 		}
 	}
 	std::string format(std::string inputJson)
 	{
-		Json::Reader reader;
+		Json::CharReaderBuilder readerBuilder;
+		JSONCPP_STRING errs;
+		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
 		Json::Value root;
-		if (reader.parse(inputJson.c_str(), root))
+		if (reader->parse(inputJson.data(), inputJson.data() + inputJson.size(), &root, &errs))
 		{
 
 			return root.toStyledString();
 		}
 		else
 		{
+			std::cout << errs << std::endl;
 			return "";
 		}
 	}

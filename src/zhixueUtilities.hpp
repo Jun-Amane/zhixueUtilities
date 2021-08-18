@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string.h>
+#include <memory>
 
 #define postAnsURL "https://mhw.zhixue.com/hw/manage/homework/redeploy"
 #define redoURL "https://mhw.zhixue.com/hw/correction/redo"

@@ -6,12 +6,14 @@ namespace login
     std::string apiRes2userId(std::string inputStr)
     {
 
-        Json::Reader reader;
+        Json::CharReaderBuilder readerBuilder;
+		JSONCPP_STRING errs;
+		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
         Json::Value root;
 
         std::string userId = "";
 
-        if (reader.parse(inputStr.c_str(), root))
+        if (reader->parse(inputStr.data(), inputStr.data() + inputStr.size(), &root, &errs))
         {
             if (root["code"] == "success")
             {
@@ -25,7 +27,7 @@ namespace login
         }
         else
         {
-            printf("\nerr\n");
+            std::cout << errs << std::endl;
             return inputStr;
         }
     }
@@ -33,12 +35,14 @@ namespace login
     std::string apiRes2at(std::string inputStr)
     {
 
-        Json::Reader reader;
+        Json::CharReaderBuilder readerBuilder;
+		JSONCPP_STRING errs;
+		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
         Json::Value root;
 
         std::string at = "";
 
-        if (reader.parse(inputStr.c_str(), root))
+        if (reader->parse(inputStr.data(), inputStr.data() + inputStr.size(), &root, &errs))
         {
             if (root["code"] == "success")
             {
@@ -52,7 +56,7 @@ namespace login
         }
         else
         {
-            printf("\nerr\n");
+            std::cout << errs << std::endl;
             return inputStr;
         }
     }
@@ -60,7 +64,9 @@ namespace login
     std::string stuLoginPipeline(std::string username, std::string passwd)
     {
 
-        Json::Reader reader;
+        Json::CharReaderBuilder readerBuilder;
+		JSONCPP_STRING errs;
+		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
         Json::Value root;
 
         Json::Value finalout;
@@ -74,7 +80,7 @@ namespace login
         {
             std::string resultStr = reqData::casLogin(userId, at);
             //std::cout << resultStr << std::endl;
-            if (reader.parse(resultStr.c_str(), root))
+            if (reader->parse(resultStr.data(), resultStr.data() + resultStr.size(), &root, &errs))
             {
                 if (root["errorInfo"].asString() == "操作成功")
                 {
@@ -91,12 +97,12 @@ namespace login
             }
             else
             {
-                printf("\nerr1\n");
+                std::cout << errs << std::endl;
             }
         }
         else
         {
-            printf("\nerr2\n");
+            printf("\nerr:非零项目为零\n");
         }
         return finalout.toStyledString();
     }
@@ -104,7 +110,9 @@ namespace login
     std::string tchLoginPipeline(std::string username, std::string passwd)
     {
 
-        Json::Reader reader;
+        Json::CharReaderBuilder readerBuilder;
+		JSONCPP_STRING errs;
+		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
         Json::Value root;
 
         Json::Value finalout;
@@ -118,7 +126,7 @@ namespace login
         {
             std::string resultStr = reqData::uniteLogin(userId, at);
             //std::cout << resultStr << std::endl;
-            if (reader.parse(resultStr.c_str(), root))
+            if (reader->parse(resultStr.data(), resultStr.data() + resultStr.size(), &root, &errs))
             {
                 if (root["errorInfo"].asString() == "操作成功")
                 {
@@ -134,7 +142,8 @@ namespace login
             }
             else
             {
-                printf("\nerr\n");
+                std::cout << errs << std::endl;
+                return "";
             }
         }
         else
@@ -146,44 +155,53 @@ namespace login
 
     std::string finalout2Token(std::string inputStr)
     {
-        Json::Reader reader;
+        Json::CharReaderBuilder readerBuilder;
+		JSONCPP_STRING errs;
+		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
         Json::Value root;
 
-        if (reader.parse(inputStr.c_str(), root))
+        if (reader->parse(inputStr.data(), inputStr.data() + inputStr.size(), &root, &errs))
         {
             return root["token"].asString();
         }
         else
         {
+            std::cout << errs << std::endl;
             return "";
         }
     }
 
     std::string finalout2userId(std::string inputStr)
     {
-        Json::Reader reader;
+        Json::CharReaderBuilder readerBuilder;
+		JSONCPP_STRING errs;
+		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
         Json::Value root;
 
-        if (reader.parse(inputStr.c_str(), root))
+        if (reader->parse(inputStr.data(), inputStr.data() + inputStr.size(), &root, &errs))
         {
             return root["userId"].asString();
         }
         else
         {
+            std::cout << errs << std::endl;
             return "";
         }
     }
     std::string finalout2clazzId(std::string inputStr)
     {
-        Json::Reader reader;
+        Json::CharReaderBuilder readerBuilder;
+		JSONCPP_STRING errs;
+		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
         Json::Value root;
 
-        if (reader.parse(inputStr.c_str(), root))
+        if (reader->parse(inputStr.data(), inputStr.data() + inputStr.size(), &root, &errs))
         {
             return root["clazzId"].asString();
         }
         else
         {
+            std::cout << errs << std::endl;
             return "";
         }
     }

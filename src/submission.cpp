@@ -12,14 +12,16 @@ namespace submission
         std::string questionId;
         std::string childQuestionId;
         //std::string ans;
-        Json::Reader reader;
+        Json::CharReaderBuilder readerBuilder;
+        JSONCPP_STRING errs;
+        std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
         Json::Value root;
         std::string answer = "";
 
         Json::Value finalout;
-        if (reader.parse(str.c_str(), finalout))
+        if (reader->parse(str.data(), str.data() + str.size(), &finalout, &errs))
         {
-            if (reader.parse(inputStr.c_str(), root))
+            if (reader->parse(inputStr.data(), inputStr.data() + inputStr.size(), &root, &errs))
             {
                 const Json::Value sectionList = root["result"]["sectionList"];
                 for (unsigned int i = 0; i < sectionList.size(); i++)
@@ -51,7 +53,7 @@ namespace submission
                                     tempe = "{\"answer\":\"\",\"attachments\":[{\"fileType\":1,\"path\":\"" + attachmentUrl + "\",\"sort\":0,\"sourceType\":2}],\"childQuestionId\":\"" + childQuestionId + "\",\"duration\":0,\"feedback\":0,\"questionId\":\"" + questionId + "\"}";
                                 }
 
-                                if (reader.parse(tempe.c_str(), temp))
+                                if (reader->parse(tempe.data(), tempe.data() + tempe.size(), &temp, &errs))
                                 {
                                     finalout["params"]["questions"].append(temp);
                                 }
@@ -80,9 +82,14 @@ namespace submission
 
                                 Json::Value temp;
                                 std::string tempe = "{\"answer\":\"" + answer + "\",\"attachments\":[],\"childQuestionId\":\"" + childQuestionId + "\",\"duration\":0,\"feedback\":0,\"questionId\":\"" + questionId + "\"}";
-                                if (reader.parse(tempe.c_str(), temp))
+                                if (reader->parse(tempe.data(), tempe.data() + tempe.size(), &temp, &errs))
                                 {
                                     finalout["params"]["questions"].append(Json::Value(temp));
+                                }
+                                else
+                                {
+                                    std::cout << errs << std::endl;
+                                    return "";
                                 }
                             }
                         }
@@ -91,8 +98,14 @@ namespace submission
             }
             else
             {
-                printf("\nerr\n");
+                std::cout << errs << std::endl;
+                return "";
             }
+        }
+        else
+        {
+            std::cout << errs << std::endl;
+            return "";
         }
 
         return finalout.toStyledString();
@@ -134,14 +147,16 @@ namespace submission
         std::string questionId;
         std::string childQuestionId;
         //std::string ans;
-        Json::Reader reader;
+        Json::CharReaderBuilder readerBuilder;
+        JSONCPP_STRING errs;
+        std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
         Json::Value root;
         Json::Value reviseQuest;
 
         Json::Value finalout;
-        if (reader.parse(str.c_str(), finalout))
+        if (reader->parse(str.data(), str.data() + str.size(), &finalout, &errs))
         {
-            if (reader.parse(inputStr.c_str(), root))
+            if (reader->parse(inputStr.data(), inputStr.data() + inputStr.size(), &root, &errs))
             {
                 const Json::Value sectionList = root["result"]["sectionList"];
                 for (unsigned int i = 0; i < sectionList.size(); i++)
@@ -152,7 +167,8 @@ namespace submission
                     {
 
                         questionId = topicList[i]["questionId"].asString();
-                        if (reader.parse(reqData::getReviseQuestion(stuId, hwId, stuToken).c_str(), reviseQuest))
+                        std::string getReviseQuestionResult = reqData::getReviseQuestion(stuId, hwId, stuToken);
+                        if (reader->parse(getReviseQuestionResult.data(), getReviseQuestionResult.data() + getReviseQuestionResult.size(), &reviseQuest, &errs))
                         {
                             //std::cout << reqData::getReviseQuestion(stuId, hwId,stuToken);
                             for (unsigned int j = 0; j < reviseQuest["result"]["questions"].size(); j++)
@@ -182,9 +198,14 @@ namespace submission
                                                         tempe = "{\"answer\":\"\",\"attachments\":[{\"fileType\":1,\"path\":\"" + attachmentUrl + "\",\"sort\":0,\"sourceType\":2}],\"childQuestionId\":\"" + childQuestionId + "\",\"duration\":0,\"feedback\":0,\"questionId\":\"" + questionId + "\"}";
                                                     }
 
-                                                    if (reader.parse(tempe.c_str(), temp))
+                                                    if (reader->parse(tempe.data(), tempe.data() + tempe.size(), &temp, &errs))
                                                     {
                                                         finalout["params"]["questions"].append(temp);
+                                                    }
+                                                    else
+                                                    {
+                                                        std::cout << errs << std::endl;
+                                                        return "";
                                                     }
                                                 }
 
@@ -194,9 +215,14 @@ namespace submission
                                                     {
                                                         Json::Value temp;
                                                         std::string tempe = "{\"answer\":\"" + answers[i].asString() + "\",\"attachments\":[],\"childQuestionId\":\"" + childQuestionId + "\",\"duration\":0,\"feedback\":0,\"questionId\":\"" + questionId + "\"}";
-                                                        if (reader.parse(tempe.c_str(), temp))
+                                                        if (reader->parse(tempe.data(), tempe.data() + tempe.size(), &temp, &errs))
                                                         {
                                                             finalout["params"]["questions"].append(Json::Value(temp));
+                                                        }
+                                                        else
+                                                        {
+                                                            std::cout << errs << std::endl;
+                                                            return "";
                                                         }
                                                     }
                                                 }
@@ -205,13 +231,24 @@ namespace submission
                                 }
                             }
                         }
+                        else
+                        {
+                            std::cout << errs << std::endl;
+                            return "";
+                        }
                     }
                 }
             }
             else
             {
-                printf("\nerr\n");
+                std::cout << errs << std::endl;
+                return "";
             }
+        }
+        else
+        {
+            std::cout << errs << std::endl;
+            return "";
         }
 
         return finalout.toStyledString();

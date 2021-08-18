@@ -5,16 +5,18 @@ namespace operateHw
 {
     std::string prepareUpdateJson(std::string inputStr)
     {
-        Json::Reader reader;
+        Json::CharReaderBuilder readerBuilder;
+        JSONCPP_STRING errs;
+        std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
         Json::Value root;
 
         std::string updateJsonTemplate = "{\"base\":{\"appId\":\"OAXI57PG\",\"appVersion\":\"1.17.1877\",\"packageName\":\"com.iflytek.elpmobile.marktool\",\"sysType\":\"Android\",\"sysVersion\":\"\",\"udid\":\"00:00:00:00:00:00\"},\"params\":{}}";
 
         Json::Value finalout;
 
-        if (reader.parse(inputStr.c_str(), root))
+        if (reader->parse(inputStr.data(), inputStr.data() + inputStr.size(), &root, &errs))
         {
-            if (reader.parse(updateJsonTemplate.c_str(), finalout))
+            if (reader->parse(updateJsonTemplate.data(), updateJsonTemplate.data() + updateJsonTemplate.size(), &finalout, &errs))
             {
 
                 finalout["params"]["beginTime"] = root["result"]["beginTime"].asUInt64();
@@ -39,6 +41,16 @@ namespace operateHw
                 finalout["params"]["subjectCode"] = root["result"]["subjectCode"].asString();
                 finalout["params"]["title"] = root["result"]["title"].asString();
             }
+            else
+            {
+                std::cout << errs << std::endl;
+                return "";
+            }
+        }
+        else
+        {
+            std::cout << errs << std::endl;
+            return "";
         }
 
         return finalout.toStyledString();
@@ -52,12 +64,15 @@ namespace operateHw
     std::string showSubmitDetailPipeline(std::string tchToken, std::string hwId, std::string clazzId)
     {
 
-        Json::Reader reader;
+        Json::CharReaderBuilder readerBuilder;
+        JSONCPP_STRING errs;
+        std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
         Json::Value root;
 
         Json::Value finalout;
         /*概覽*/
-        if (reader.parse(reqData::showHwSubmitDetail(tchToken, hwId, clazzId).c_str(), root))
+        std::string showHwSubmitDetailResult = reqData::showHwSubmitDetail(tchToken, hwId, clazzId);
+        if (reader->parse(showHwSubmitDetailResult.data(), showHwSubmitDetailResult.data() + showHwSubmitDetailResult.size(), &root, &errs))
         {
 
             finalout["平均時間"] = root["result"]["classOverView"]["avgCostTime"].asString();
@@ -69,10 +84,12 @@ namespace operateHw
         }
         else
         {
+            std::cout << errs << std::endl;
             return "";
         }
         /*詳細*/
-        if (reader.parse(reqData::listQuestionView(tchToken, hwId, clazzId).c_str(), root))
+        std::string listQuestionViewResult = reqData::listQuestionView(tchToken, hwId, clazzId);
+        if (reader->parse(listQuestionViewResult.data(), listQuestionViewResult.data() + listQuestionViewResult.size(), &root, &errs))
         {
 
             const Json::Value listQuestionView = root["result"]["listQuestionView"];
@@ -83,16 +100,22 @@ namespace operateHw
                 temp[listQuestionView[i]["sectionName"].asString()][listQuestionView[i]["questionTitle"].asString()]["この質問の得点率"] = listQuestionView[i]["curScoreRate"].asString();
                 std::string questionDetail = reqData::getQuestionDetail(tchToken, hwId, clazzId, listQuestionView[i]["questionId"].asString().c_str());
 
-
                 Json::Value temp2;
-                if(reader.parse(questionDetail.c_str(),temp2)){
+                if (reader->parse(questionDetail.data(), questionDetail.data() + questionDetail.size(), &temp2, &errs))
+                {
                     temp[listQuestionView[i]["sectionName"].asString()][listQuestionView[i]["questionTitle"].asString()]["回答の概要"] = temp2["result"]["answerDetail"];
+                }
+                else
+                {
+                    std::cout << errs << std::endl;
+                    return "";
                 }
                 finalout["詳細"].append(temp);
             }
         }
         else
         {
+            std::cout << errs << std::endl;
             return "";
         }
         return finalout.toStyledString();
