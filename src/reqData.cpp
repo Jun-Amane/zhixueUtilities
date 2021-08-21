@@ -44,6 +44,9 @@ namespace reqData
 		curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
 		//curl_easy_setopt(curl, CURLOPT_HEADER, 1);
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+#ifdef _WIN32
+		curl_easy_setopt(curl, CURLOPT_CAINFO, "cacert.pem");
+#endif
 		res = curl_easy_perform(curl);
 		curl_easy_cleanup(curl);
 
@@ -75,6 +78,9 @@ namespace reqData
 		curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
 		//curl_easy_setopt(curl, CURLOPT_HEADER, 1);
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+#ifdef _WIN32
+		curl_easy_setopt(curl, CURLOPT_CAINFO, "cacert.pem");
+#endif
 		res = curl_easy_perform(curl);
 		curl_easy_cleanup(curl);
 
@@ -118,6 +124,9 @@ namespace reqData
 		curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
 		//curl_easy_setopt(curl, CURLOPT_HEADER, 1);
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+#ifdef _WIN32
+		curl_easy_setopt(curl, CURLOPT_CAINFO, "cacert.pem");
+#endif
 		res = curl_easy_perform(curl);
 		curl_easy_cleanup(curl);
 
@@ -157,6 +166,9 @@ namespace reqData
 		curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
 		//curl_easy_setopt(curl, CURLOPT_HEADER, 1);
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+#ifdef _WIN32
+		curl_easy_setopt(curl, CURLOPT_CAINFO, "cacert.pem");
+#endif
 		res = curl_easy_perform(curl);
 		curl_easy_cleanup(curl);
 
@@ -195,6 +207,9 @@ namespace reqData
 		curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
 		//curl_easy_setopt(curl, CURLOPT_HEADER, 1);
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+#ifdef _WIN32
+		curl_easy_setopt(curl, CURLOPT_CAINFO, "cacert.pem");
+#endif
 		res = curl_easy_perform(curl);
 		curl_easy_cleanup(curl);
 
@@ -237,6 +252,9 @@ namespace reqData
 		curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
 		//curl_easy_setopt(curl, CURLOPT_HEADER, 1);
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+#ifdef _WIN32
+		curl_easy_setopt(curl, CURLOPT_CAINFO, "cacert.pem");
+#endif
 		res = curl_easy_perform(curl);
 		curl_easy_cleanup(curl);
 
@@ -280,6 +298,9 @@ namespace reqData
 		curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
 		//curl_easy_setopt(curl, CURLOPT_HEADER, 1);
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+#ifdef _WIN32
+		curl_easy_setopt(curl, CURLOPT_CAINFO, "cacert.pem");
+#endif
 		res = curl_easy_perform(curl);
 		curl_easy_cleanup(curl);
 
@@ -311,6 +332,9 @@ namespace reqData
 		curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
 		//curl_easy_setopt(curl, CURLOPT_HEADER, 1);
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+#ifdef _WIN32
+		curl_easy_setopt(curl, CURLOPT_CAINFO, "cacert.pem");
+#endif
 		res = curl_easy_perform(curl);
 		curl_easy_cleanup(curl);
 
@@ -343,6 +367,9 @@ namespace reqData
 		curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
 		//curl_easy_setopt(curl, CURLOPT_HEADER, 1);
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+#ifdef _WIN32
+		curl_easy_setopt(curl, CURLOPT_CAINFO, "cacert.pem");
+#endif
 		res = curl_easy_perform(curl);
 		curl_easy_cleanup(curl);
 
@@ -373,6 +400,9 @@ namespace reqData
 		curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
 		//curl_easy_setopt(curl, CURLOPT_HEADER, 1);
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+#ifdef _WIN32
+		curl_easy_setopt(curl, CURLOPT_CAINFO, "cacert.pem");
+#endif
 		res = curl_easy_perform(curl);
 		curl_easy_cleanup(curl);
 
@@ -412,6 +442,9 @@ namespace reqData
 		curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
 		//curl_easy_setopt(curl, CURLOPT_HEADER, 1);
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+#ifdef _WIN32
+		curl_easy_setopt(curl, CURLOPT_CAINFO, "cacert.pem");
+#endif
 		res = curl_easy_perform(curl);
 		curl_easy_cleanup(curl);
 
@@ -421,7 +454,7 @@ namespace reqData
 	std::string showHwSubmitDetail(std::string tchToken, std::string hwId, std::string clazzId)
 	{
 
-		std::string POSTFIELDS = "{\"base\":{\"Authorization\":\""+tchToken+"\",\"appId\":\"OAXI57PG\",\"appVersion\":\"1.17.1905\",\"packageName\":\"com.iflytek.elpmobile.marktool\",\"sysType\":\"Android\",\"sysVersion\":\"0\",\"udid\":\"\",\"userId\":\"0\",\"utag\":\"\"},\"params\":{\"classId\":\""+clazzId+"\",\"hwId\":\""+hwId+"\",\"hwType\":105,\"schoolId\":\"0\"},\"token\":\""+tchToken+"\"}";
+		std::string POSTFIELDS = "{\"base\":{\"Authorization\":\"" + tchToken + "\",\"appId\":\"OAXI57PG\",\"appVersion\":\"1.17.1905\",\"packageName\":\"com.iflytek.elpmobile.marktool\",\"sysType\":\"Android\",\"sysVersion\":\"0\",\"udid\":\"\",\"userId\":\"0\",\"utag\":\"\"},\"params\":{\"classId\":\"" + clazzId + "\",\"hwId\":\"" + hwId + "\",\"hwType\":105,\"schoolId\":\"0\"},\"token\":\"" + tchToken + "\"}";
 		std::string len = "Content-Length:" + std::__cxx11::to_string(POSTFIELDS.size());
 		std::string auth = "Authorization:" + tchToken;
 
@@ -444,13 +477,17 @@ namespace reqData
 		curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
 		//curl_easy_setopt(curl, CURLOPT_HEADER, 1);
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+#ifdef _WIN32
+		curl_easy_setopt(curl, CURLOPT_CAINFO, "cacert.pem");
+#endif
 		res = curl_easy_perform(curl);
 		curl_easy_cleanup(curl);
 
 		return str;
 	}
-	std::string listQuestionView(std::string tchToken, std::string hwId, std::string clazzId){
-		std::string POSTFIELDS = "{\"base\":{\"Authorization\":\""+tchToken+"\",\"appId\":\"OAXI57PG\",\"appVersion\":\"1.17.1905\",\"packageName\":\"com.iflytek.elpmobile.marktool\",\"sysType\":\"Android\",\"sysVersion\":\"0\",\"udid\":\"\",\"userId\":\"0\",\"utag\":\"\"},\"params\":{\"classId\":\""+clazzId+"\",\"hwId\":\""+hwId+"\",\"hwType\":105},\"token\":\""+tchToken+"\"}";
+	std::string listQuestionView(std::string tchToken, std::string hwId, std::string clazzId)
+	{
+		std::string POSTFIELDS = "{\"base\":{\"Authorization\":\"" + tchToken + "\",\"appId\":\"OAXI57PG\",\"appVersion\":\"1.17.1905\",\"packageName\":\"com.iflytek.elpmobile.marktool\",\"sysType\":\"Android\",\"sysVersion\":\"0\",\"udid\":\"\",\"userId\":\"0\",\"utag\":\"\"},\"params\":{\"classId\":\"" + clazzId + "\",\"hwId\":\"" + hwId + "\",\"hwType\":105},\"token\":\"" + tchToken + "\"}";
 		std::string len = "Content-Length:" + std::__cxx11::to_string(POSTFIELDS.size());
 		std::string auth = "Authorization:" + tchToken;
 
@@ -473,14 +510,18 @@ namespace reqData
 		curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
 		//curl_easy_setopt(curl, CURLOPT_HEADER, 1);
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+#ifdef _WIN32
+		curl_easy_setopt(curl, CURLOPT_CAINFO, "cacert.pem");
+#endif
 		res = curl_easy_perform(curl);
 		curl_easy_cleanup(curl);
 
 		return str;
 	}
 
-	std::string getQuestionDetail(std::string tchToken, std::string hwId, std::string clazzId, std::string questionId){
-		std::string POSTFIELDS = "{\"base\":{\"Authorization\":\""+tchToken+"\",\"appId\":\"OAXI57PG\",\"appVersion\":\"1.17.1905\",\"packageName\":\"com.iflytek.elpmobile.marktool\",\"sysType\":\"Android\",\"sysVersion\":\"0\",\"udid\":\"02:00:00:00:00:00\",\"userId\":\"0\",\"utag\":\"\"},\"params\":{\"hwId\":\""+hwId+"\",\"classId\":\""+clazzId+"\",\"hwType\":\"105\",\"topicId\":1,\"sysType\":\"\",\"questionId\":\""+questionId+"\"},\"token\":\""+tchToken+"\"}";
+	std::string getQuestionDetail(std::string tchToken, std::string hwId, std::string clazzId, std::string questionId)
+	{
+		std::string POSTFIELDS = "{\"base\":{\"Authorization\":\"" + tchToken + "\",\"appId\":\"OAXI57PG\",\"appVersion\":\"1.17.1905\",\"packageName\":\"com.iflytek.elpmobile.marktool\",\"sysType\":\"Android\",\"sysVersion\":\"0\",\"udid\":\"02:00:00:00:00:00\",\"userId\":\"0\",\"utag\":\"\"},\"params\":{\"hwId\":\"" + hwId + "\",\"classId\":\"" + clazzId + "\",\"hwType\":\"105\",\"topicId\":1,\"sysType\":\"\",\"questionId\":\"" + questionId + "\"},\"token\":\"" + tchToken + "\"}";
 		std::string len = "Content-Length:" + std::__cxx11::to_string(POSTFIELDS.size());
 		std::string auth = "Authorization:" + tchToken;
 
@@ -503,6 +544,9 @@ namespace reqData
 		curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
 		//curl_easy_setopt(curl, CURLOPT_HEADER, 1);
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+#ifdef _WIN32
+		curl_easy_setopt(curl, CURLOPT_CAINFO, "cacert.pem");
+#endif
 		res = curl_easy_perform(curl);
 		curl_easy_cleanup(curl);
 
