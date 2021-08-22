@@ -157,7 +157,6 @@ namespace submission
         def["emitUTF8"] = true;
         readerBuilder.settings_ = def;
         JSONCPP_STRING errs;
-        JSONCPP_STRING errs;
         std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
         Json::Value root;
         Json::Value reviseQuest;

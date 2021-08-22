@@ -11,7 +11,6 @@ namespace operateHw
         def["emitUTF8"] = true;
         readerBuilder.settings_ = def;
         JSONCPP_STRING errs;
-        JSONCPP_STRING errs;
         std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
         Json::Value root;
 
@@ -74,7 +73,6 @@ namespace operateHw
         Json::CharReaderBuilder::setDefaults(&def);
         def["emitUTF8"] = true;
         readerBuilder.settings_ = def;
-        JSONCPP_STRING errs;
         JSONCPP_STRING errs;
         std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
         Json::Value root;
