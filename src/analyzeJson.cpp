@@ -78,6 +78,7 @@ namespace analyzeJson
 		}
 		else
 		{
+			std::cout << inputJson << std::endl;
 			std::cout << errs << std::endl;
 			return "";
 		}
@@ -120,6 +121,7 @@ namespace analyzeJson
 		}
 		else
 		{
+			std::cout << inputJson << std::endl;
 			std::cout << errs << std::endl;
 			return "";
 		}
@@ -198,6 +200,7 @@ namespace analyzeJson
 		}
 		else
 		{
+			std::cout << inputJson << std::endl;
 			std::cout << errs << std::endl;
 			return "";
 		}

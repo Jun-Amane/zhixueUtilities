@@ -84,6 +84,7 @@ namespace operateHw
         }
         else
         {
+            
             std::cout << errs << std::endl;
             return "";
         }
