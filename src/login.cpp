@@ -7,10 +7,6 @@ namespace login
     {
 
         Json::CharReaderBuilder readerBuilder;
-        Json::Value def;
-        Json::CharReaderBuilder::setDefaults(&def);
-        def["emitUTF8"] = true;
-        readerBuilder.settings_ = def;
         JSONCPP_STRING errs;
 		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
         Json::Value root;
@@ -40,10 +36,6 @@ namespace login
     {
 
         Json::CharReaderBuilder readerBuilder;
-        Json::Value def;
-        Json::CharReaderBuilder::setDefaults(&def);
-        def["emitUTF8"] = true;
-        readerBuilder.settings_ = def;
         JSONCPP_STRING errs;
 		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
         Json::Value root;
@@ -73,10 +65,6 @@ namespace login
     {
 
         Json::CharReaderBuilder readerBuilder;
-        Json::Value def;
-        Json::CharReaderBuilder::setDefaults(&def);
-        def["emitUTF8"] = true;
-        readerBuilder.settings_ = def;
         JSONCPP_STRING errs;
 		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
         Json::Value root;
@@ -123,10 +111,6 @@ namespace login
     {
 
         Json::CharReaderBuilder readerBuilder;
-        Json::Value def;
-        Json::CharReaderBuilder::setDefaults(&def);
-        def["emitUTF8"] = true;
-        readerBuilder.settings_ = def;
         JSONCPP_STRING errs;
 		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
         Json::Value root;
@@ -172,10 +156,6 @@ namespace login
     std::string finalout2Token(std::string inputStr)
     {
         Json::CharReaderBuilder readerBuilder;
-        Json::Value def;
-        Json::CharReaderBuilder::setDefaults(&def);
-        def["emitUTF8"] = true;
-        readerBuilder.settings_ = def;
         JSONCPP_STRING errs;
 		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
         Json::Value root;
@@ -194,10 +174,6 @@ namespace login
     std::string finalout2userId(std::string inputStr)
     {
         Json::CharReaderBuilder readerBuilder;
-        Json::Value def;
-        Json::CharReaderBuilder::setDefaults(&def);
-        def["emitUTF8"] = true;
-        readerBuilder.settings_ = def;
         JSONCPP_STRING errs;
 		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
         Json::Value root;
@@ -215,10 +191,6 @@ namespace login
     std::string finalout2clazzId(std::string inputStr)
     {
         Json::CharReaderBuilder readerBuilder;
-        Json::Value def;
-        Json::CharReaderBuilder::setDefaults(&def);
-        def["emitUTF8"] = true;
-        readerBuilder.settings_ = def;
         JSONCPP_STRING errs;
 		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
         Json::Value root;

@@ -13,10 +13,6 @@ namespace submission
         std::string childQuestionId;
         //std::string ans;
         Json::CharReaderBuilder readerBuilder;
-        Json::Value def;
-        Json::CharReaderBuilder::setDefaults(&def);
-        def["emitUTF8"] = true;
-        readerBuilder.settings_ = def;
         JSONCPP_STRING errs;
         std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
         Json::Value root;
@@ -152,10 +148,6 @@ namespace submission
         std::string childQuestionId;
         //std::string ans;
         Json::CharReaderBuilder readerBuilder;
-        Json::Value def;
-        Json::CharReaderBuilder::setDefaults(&def);
-        def["emitUTF8"] = true;
-        readerBuilder.settings_ = def;
         JSONCPP_STRING errs;
         std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
         Json::Value root;

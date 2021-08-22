@@ -14,10 +14,6 @@ namespace analyzeJson
 		std::string child;
 		//std::string ans;
 		Json::CharReaderBuilder readerBuilder;
-        Json::Value def;
-        Json::CharReaderBuilder::setDefaults(&def);
-        def["emitUTF8"] = true;
-        readerBuilder.settings_ = def;
         JSONCPP_STRING errs;
 		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
 		Json::Value root;
@@ -93,10 +89,6 @@ namespace analyzeJson
 	{
 
 		Json::CharReaderBuilder readerBuilder;
-        Json::Value def;
-        Json::CharReaderBuilder::setDefaults(&def);
-        def["emitUTF8"] = true;
-        readerBuilder.settings_ = def;
         JSONCPP_STRING errs;
 		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
 		Json::Value root;
@@ -138,10 +130,6 @@ namespace analyzeJson
 	int analyzeIfSuccess(std::string str)
 	{
 		Json::CharReaderBuilder readerBuilder;
-        Json::Value def;
-        Json::CharReaderBuilder::setDefaults(&def);
-        def["emitUTF8"] = true;
-        readerBuilder.settings_ = def;
         JSONCPP_STRING errs;
 		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
 		Json::Value root;
@@ -165,10 +153,6 @@ namespace analyzeJson
 	std::string index2hwId(std::string inputJson, std::string index)
 	{
 		Json::CharReaderBuilder readerBuilder;
-        Json::Value def;
-        Json::CharReaderBuilder::setDefaults(&def);
-        def["emitUTF8"] = true;
-        readerBuilder.settings_ = def;
         JSONCPP_STRING errs;
 		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
 		Json::Value root;
@@ -186,10 +170,6 @@ namespace analyzeJson
 	std::string index2stuHwId(std::string inputJson, std::string index)
 	{
 		Json::CharReaderBuilder readerBuilder;
-        Json::Value def;
-        Json::CharReaderBuilder::setDefaults(&def);
-        def["emitUTF8"] = true;
-        readerBuilder.settings_ = def;
         JSONCPP_STRING errs;
 		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
 		Json::Value root;
@@ -207,10 +187,6 @@ namespace analyzeJson
 	std::string clkHwDetail2clockRecordId(std::string inputJson)
 	{
 		Json::CharReaderBuilder readerBuilder;
-        Json::Value def;
-        Json::CharReaderBuilder::setDefaults(&def);
-        def["emitUTF8"] = true;
-        readerBuilder.settings_ = def;
         JSONCPP_STRING errs;
 		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
 		Json::Value root;
@@ -229,10 +205,6 @@ namespace analyzeJson
 	std::string format(std::string inputJson)
 	{
 		Json::CharReaderBuilder readerBuilder;
-        Json::Value def;
-        Json::CharReaderBuilder::setDefaults(&def);
-        def["emitUTF8"] = true;
-        readerBuilder.settings_ = def;
         JSONCPP_STRING errs;
 		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
 		Json::Value root;
