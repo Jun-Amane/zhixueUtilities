@@ -19,7 +19,6 @@ namespace analyzeJson
         def["emitUTF8"] = true;
         readerBuilder.settings_ = def;
         JSONCPP_STRING errs;
-		JSONCPP_STRING errs;
 		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
 		Json::Value root;
 
@@ -99,7 +98,6 @@ namespace analyzeJson
         def["emitUTF8"] = true;
         readerBuilder.settings_ = def;
         JSONCPP_STRING errs;
-		JSONCPP_STRING errs;
 		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
 		Json::Value root;
 		Json::Value finalout;
@@ -145,7 +143,6 @@ namespace analyzeJson
         def["emitUTF8"] = true;
         readerBuilder.settings_ = def;
         JSONCPP_STRING errs;
-		JSONCPP_STRING errs;
 		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
 		Json::Value root;
 		if (reader->parse(str.data(), str.data() + str.size(), &root, &errs))
@@ -173,7 +170,6 @@ namespace analyzeJson
         def["emitUTF8"] = true;
         readerBuilder.settings_ = def;
         JSONCPP_STRING errs;
-		JSONCPP_STRING errs;
 		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
 		Json::Value root;
 		index = "インデックスは" + index + "である。";
@@ -195,7 +191,6 @@ namespace analyzeJson
         def["emitUTF8"] = true;
         readerBuilder.settings_ = def;
         JSONCPP_STRING errs;
-		JSONCPP_STRING errs;
 		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
 		Json::Value root;
 		index = "インデックスは" + index + "である。";
@@ -217,7 +212,6 @@ namespace analyzeJson
         def["emitUTF8"] = true;
         readerBuilder.settings_ = def;
         JSONCPP_STRING errs;
-		JSONCPP_STRING errs;
 		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
 		Json::Value root;
 		if (reader->parse(inputJson.data(), inputJson.data() + inputJson.size(), &root, &errs))
@@ -240,7 +234,6 @@ namespace analyzeJson
         def["emitUTF8"] = true;
         readerBuilder.settings_ = def;
         JSONCPP_STRING errs;
-		JSONCPP_STRING errs;
 		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
 		Json::Value root;
 		if (reader->parse(inputJson.data(), inputJson.data() + inputJson.size(), &root, &errs))
