@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 	//std::string tchToken;
 	//std::string stuToken;
 	std::string hwId;
-	//std::string stuId;
+	std::string stuId;
 	std::string stuHwId;
 	std::string listIndex;
 	std::string stuUsername;
@@ -37,6 +37,7 @@ int main(int argc, char *argv[])
 	bool completed = false;
 	bool isClkHw = false;
 	bool useClazzId = false;
+	bool redoWithStuId = false;
 
 	auto getListMode = (clipp::command("getList").set(selected, mode::getList),
 						clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's encoded Psssword",
@@ -56,7 +57,8 @@ int main(int argc, char *argv[])
 					 clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's encoded Psssword",
 					 clipp::option("--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index",
 					 clipp::option("--already-done").set(completed, true).doc("use the list of completed homeworks"),
-					 clipp::option("--is-clock-homework").set(isClkHw, true).doc("redo the clock homework"));
+					 clipp::option("--is-clock-homework").set(isClkHw, true).doc("redo the clock homework"),
+					 clipp::option("--student-id").set(redoWithStuId, true).doc("redo with student id") & clipp::value("stuId", stuId) % "Student Id");
 
 	auto submitMode = (clipp::command("autoSubmit").set(selected, mode::submitHomework),
 					   clipp::option("-tch", "--teacher-login") & clipp::value("tchUsername", tchUsername) % "ANY Teacher's Username" & clipp::value("tchPasswd", tchPasswd) % "THE Teacher's encoded Password",
@@ -182,10 +184,27 @@ int main(int argc, char *argv[])
 			{
 				if (useIndex)
 				{
-					std::string inputJson = analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), completed));
-					hwId = analyzeJson::index2hwId(inputJson, listIndex);
-					stuHwId = analyzeJson::index2stuHwId(inputJson, listIndex);
-					std::cout << reqData::redoHomework(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), login::finalout2userId(login::stuLoginPipeline(stuUsername, stuPasswd)), hwId, isClkHw, stuHwId) << std::endl;
+					if (redoWithStuId)
+					{
+						if (!isClkHw)
+						{
+							std::string inputJson = analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), completed));
+							hwId = analyzeJson::index2hwId(inputJson, listIndex);
+							stuHwId = analyzeJson::index2stuHwId(inputJson, listIndex);
+							std::cout << reqData::redoHomework(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), stuId, hwId, isClkHw, stuHwId) << std::endl;
+						}
+						else
+						{
+							std::cout << "Clock Homework dosen't support this student id mode." << std::endl;
+						}
+					}
+					else
+					{
+						std::string inputJson = analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), completed));
+						hwId = analyzeJson::index2hwId(inputJson, listIndex);
+						stuHwId = analyzeJson::index2stuHwId(inputJson, listIndex);
+						std::cout << reqData::redoHomework(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), login::finalout2userId(login::stuLoginPipeline(stuUsername, stuPasswd)), hwId, isClkHw, stuHwId) << std::endl;
+					}
 				}
 				else
 				{
@@ -196,7 +215,21 @@ int main(int argc, char *argv[])
 					}
 					else
 					{
-						std::cout << reqData::redoHomework(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), login::finalout2userId(login::stuLoginPipeline(stuUsername, stuPasswd)), hwId, isClkHw, stuHwId) << std::endl;
+						if (redoWithStuId)
+						{
+							if (!isClkHw)
+							{
+								std::cout << reqData::redoHomework(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), stuId, hwId, isClkHw, stuHwId) << std::endl;
+							}
+							else
+							{
+								std::cout << "Clock Homework dosen't support this student id mode." << std::endl;
+							}
+						}
+						else
+						{
+							std::cout << reqData::redoHomework(login::finalout2Token(login::tchLoginPipeline(tchUsername, tchPasswd)), login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), login::finalout2userId(login::stuLoginPipeline(stuUsername, stuPasswd)), hwId, isClkHw, stuHwId) << std::endl;
+						}
 					}
 				}
 			}

@@ -5,6 +5,8 @@ AUX_SOURCE_DIRECTORY(src DIR_SRCS)
 SET(CMAKE_CXX_FLAGS "-ljsoncpp")#编译选项，非紧急情况不要动。
 IF(WIN32)
     SET(CMAKE_CXX_FLAGS "-lcurldll")
+    SET(CMAKE_CXX_STANDARD_LIBRARIES "-static-libgcc -static-libstdc++ -lwsock32 -lws2_32 ${CMAKE_CXX_STANDARD_LIBRARIES}")
+    SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive")
 ELSEIF(APPLE)
     SET(CMAKE_CXX_FLAGS "-lcurl")
 ELSEIF(UNIX)
