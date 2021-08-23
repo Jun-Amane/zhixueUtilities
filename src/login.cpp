@@ -1,5 +1,4 @@
-#include "zhixueUtilities.hpp"
-#include <jsoncpp/json/json.h>
+#include "jsonRewrite.hpp"
 
 namespace login
 {
@@ -104,7 +103,7 @@ namespace login
         {
             printf("\nerr:非零项目为零\n");
         }
-        return finalout.toStyledString();
+        return toStyledStringRewrite(finalout);
     }
 
     std::string tchLoginPipeline(std::string username, std::string passwd)
@@ -150,7 +149,7 @@ namespace login
         {
             printf("\nerr\n");
         }
-        return finalout.toStyledString();
+        return toStyledStringRewrite(finalout);
     }
 
     std::string finalout2Token(std::string inputStr)

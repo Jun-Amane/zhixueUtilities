@@ -1,5 +1,6 @@
-#include "zhixueUtilities.hpp"
-#include <jsoncpp/json/json.h>
+#include "jsonRewrite.hpp"
+
+
 
 namespace analyzeJson
 {
@@ -83,7 +84,7 @@ namespace analyzeJson
 			return "";
 		}
 
-		return finalout.toStyledString();
+		return toStyledStringRewrite(finalout);
 	}
 
 	std::string analyzeHwListJson(std::string inputJson)
@@ -126,7 +127,7 @@ namespace analyzeJson
 			return "";
 		}
 
-		return finalout.toStyledString();
+		return toStyledStringRewrite(finalout);
 	}
 
 	int analyzeIfSuccess(std::string str)
@@ -214,7 +215,7 @@ namespace analyzeJson
 		if (reader->parse(inputJson.data(), inputJson.data() + inputJson.size(), &root, &errs))
 		{
 
-			return root.toStyledString();
+			return toStyledStringRewrite(root);
 		}
 		else
 		{

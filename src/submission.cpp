@@ -1,5 +1,4 @@
-#include "zhixueUtilities.hpp"
-#include <jsoncpp/json/json.h>
+#include "jsonRewrite.hpp"
 
 namespace submission
 {
@@ -108,7 +107,7 @@ namespace submission
             return "";
         }
 
-        return finalout.toStyledString();
+        return toStyledStringRewrite(finalout);
     }
 
     std::string submissionTemplate(std::string stuToken, std::string stuHwId)
@@ -251,7 +250,7 @@ namespace submission
             return "";
         }
 
-        return finalout.toStyledString();
+        return toStyledStringRewrite(finalout);
     }
     std::string revisionPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuHwId, std::string stuId, std::string attachmentUrl)
     {

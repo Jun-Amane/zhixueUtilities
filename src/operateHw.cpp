@@ -1,5 +1,4 @@
-#include "zhixueUtilities.hpp"
-#include <jsoncpp/json/json.h>
+#include "jsonRewrite.hpp"
 
 namespace operateHw
 {
@@ -53,7 +52,7 @@ namespace operateHw
             return "";
         }
 
-        return finalout.toStyledString();
+        return toStyledStringRewrite(finalout);
     }
 
     std::string updateHwPipeline(std::string tchToken, std::string hwId)
@@ -119,6 +118,6 @@ namespace operateHw
             std::cout << errs << std::endl;
             return "";
         }
-        return finalout.toStyledString();
+        return toStyledStringRewrite(finalout);
     }
 }
