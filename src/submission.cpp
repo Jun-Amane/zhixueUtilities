@@ -220,6 +220,7 @@ namespace submission
                                                         }
                                                         else
                                                         {
+                                                            printf("如果你遇到Bad escape sequence in string等类似的错误，那么多半是填空题里或填空题的Tex编码里包含着未转义的转义符；要去修改jsoncpp的源代码似乎不是很现实，重载或重写也太麻烦了。故然，没办法。\n");
                                                             std::cout << errs << std::endl;
                                                             return "";
                                                         }
