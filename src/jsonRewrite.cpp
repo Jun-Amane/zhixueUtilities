@@ -2,9 +2,11 @@
 
 namespace rewrite
 {
-
+	
+	
 	std::string toStyledStringRewrite(Json::Value input)
 	{
+		
 
 		if (!_EMIT_UTF8)
 		{

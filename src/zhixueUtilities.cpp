@@ -2,6 +2,7 @@
 #include "zhixueUtilities.hpp"
 #include <cstdlib>
 
+	bool _EMIT_UTF8 = true;
 int main(int argc, char *argv[])
 {
 	enum class mode
@@ -39,6 +40,7 @@ int main(int argc, char *argv[])
 	bool isClkHw = false;
 	bool useClazzId = false;
 	bool redoWithStuId = false;
+
 
 	auto getListMode = (clipp::command("getList").set(selected, mode::getList),
 						clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's encoded Psssword",

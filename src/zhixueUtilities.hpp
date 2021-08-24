@@ -4,6 +4,7 @@
 #include <string.h>
 #include <memory>
 
+
 #define postAnsURL "https://mhw.zhixue.com/hw/manage/homework/redeploy"
 #define redoURL "https://mhw.zhixue.com/hw/correction/redo"
 #define clkHwRedoUrl "https://mhw.zhixue.com/hw/clock/comment/redo"
@@ -24,7 +25,8 @@
 #define listQuestionViewUrl "https://mhw.zhixue.com/hwreport/question/listQuestionView" 
 #define getQuestionDetailUrl "https://mhw.zhixue.com/hwreport/question/getQuestionDetail"
 
-extern bool _EMIT_UTF8 = true;
+
+extern bool _EMIT_UTF8;
 
 namespace analyzeJson
 {
