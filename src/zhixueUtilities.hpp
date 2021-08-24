@@ -24,6 +24,8 @@
 #define listQuestionViewUrl "https://mhw.zhixue.com/hwreport/question/listQuestionView" 
 #define getQuestionDetailUrl "https://mhw.zhixue.com/hwreport/question/getQuestionDetail"
 
+extern bool _EMIT_UTF8 = true;
+
 namespace analyzeJson
 {
     std::string analyzeAnsJson(std::string inputJson);

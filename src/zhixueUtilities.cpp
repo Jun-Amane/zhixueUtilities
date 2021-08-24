@@ -109,6 +109,9 @@ int main(int argc, char *argv[])
 						   clipp::option("--class-id").set(useClazzId, true).doc("Use givin class id") & clipp::value("clazzId", clazzId) % "Class ID");
 
 	auto cli = ((getListMode | getAnsMode | redoMode | submitMode | reviseMode | autoMode | availMode | showDeatilMode | getAttachMode | clipp::command("help").set(selected, mode::help)),
+				clipp::option("--no-emitting-utf8").call([]
+														 { _EMIT_UTF8 = false; })
+					.doc("do not emit utf8 when printing json"),
 				clipp::option("-v", "--version").call([]
 													  { std::cout << "version 2.56b" << std::endl; })
 					.doc("show version"),
@@ -184,7 +187,7 @@ int main(int argc, char *argv[])
 
 			break;
 		case mode::getAttach:
-			if (tchUsername.empty() || tchPasswd.empty())
+			if (stuUsername.empty() || stuUsername.empty())
 			{
 				std::cout << "ログインに必要な情報が不足しています。" << std::endl;
 				break;
@@ -193,17 +196,9 @@ int main(int argc, char *argv[])
 			{
 				if (useIndex)
 				{
-					if (stuUsername.empty() || stuPasswd.empty())
-					{
-						std::cout << "ログインに必要な情報が不足しています。" << std::endl;
-						break;
-					}
-					else
-					{
-						std::string inputJson = analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), completed));
-						hwId = analyzeJson::index2hwId(inputJson, listIndex);
-						std::cout << analyzeJson::analyzeAttachJson(reqData::getAttachJson(login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), login::finalout2userId(login::stuLoginPipeline(stuUsername, stuPasswd)), hwId)) << std::endl;
-					}
+					std::string inputJson = analyzeJson::analyzeHwListJson(reqData::getHwListJson(login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), completed));
+					hwId = analyzeJson::index2hwId(inputJson, listIndex);
+					std::cout << analyzeJson::analyzeAttachJson(reqData::getAttachJson(login::finalout2Token(login::stuLoginPipeline(stuUsername, stuPasswd)), login::finalout2userId(login::stuLoginPipeline(stuUsername, stuPasswd)), hwId)) << std::endl;
 				}
 				else
 				{
