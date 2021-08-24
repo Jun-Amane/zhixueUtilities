@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
 
 	auto cli = ((getListMode | getAnsMode | redoMode | submitMode | reviseMode | autoMode | availMode | showDeatilMode | getAttachMode | clipp::command("help").set(selected, mode::help)),
 				clipp::option("-v", "--version").call([]
-													  { std::cout << "version 1.28c" << std::endl; })
+													  { std::cout << "version 2.56b" << std::endl; })
 					.doc("show version"),
 				clipp::option("-h", "--help").set(selected, mode::help).doc("show this help message"));
 
