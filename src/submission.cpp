@@ -108,7 +108,7 @@ namespace submission
             return "";
         }
 
-        return toStyledStringRewrite(finalout);
+        return rewrite::toStyledStringRewrite(finalout);
     }
 
     std::string submissionTemplate(std::string stuToken, std::string stuHwId)
@@ -252,7 +252,7 @@ namespace submission
             return "";
         }
 
-        return toStyledStringRewrite(finalout);
+        return rewrite::toStyledStringRewrite(finalout);
     }
     std::string revisionPipeline(std::string tchToken, std::string hwId, std::string stuToken, std::string stuHwId, std::string stuId, std::string attachmentUrl)
     {

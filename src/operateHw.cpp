@@ -52,7 +52,7 @@ namespace operateHw
             return "";
         }
 
-        return toStyledStringRewrite(finalout);
+        return rewrite::toStyledStringRewrite(finalout);
     }
 
     std::string updateHwPipeline(std::string tchToken, std::string hwId)
@@ -118,6 +118,6 @@ namespace operateHw
             std::cout << errs << std::endl;
             return "";
         }
-        return toStyledStringRewrite(finalout);
+        return rewrite::toStyledStringRewrite(finalout);
     }
 }

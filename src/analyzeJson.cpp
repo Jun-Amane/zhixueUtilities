@@ -84,7 +84,7 @@ namespace analyzeJson
 			return "";
 		}
 
-		return toStyledStringRewrite(finalout);
+		return rewrite::toStyledStringRewrite(finalout);
 	}
 
 	std::string analyzeHwListJson(std::string inputJson)
@@ -127,7 +127,7 @@ namespace analyzeJson
 			return "";
 		}
 
-		return toStyledStringRewrite(finalout);
+		return rewrite::toStyledStringRewrite(finalout);
 	}
 
 	int analyzeIfSuccess(std::string str)
@@ -215,7 +215,47 @@ namespace analyzeJson
 		if (reader->parse(inputJson.data(), inputJson.data() + inputJson.size(), &root, &errs))
 		{
 
-			return toStyledStringRewrite(root);
+			return rewrite::toStyledStringRewrite(root);
+		}
+		else
+		{
+			std::cout << errs << std::endl;
+			return "";
+		}
+	}
+
+	std::string analyzeAttachJson(std::string inputJson){
+		Json::CharReaderBuilder readerBuilder;
+        JSONCPP_STRING errs;
+		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
+		Json::Value root;
+
+		Json::Value finalout;
+		std::string index;
+
+		if (reader->parse(inputJson.data(), inputJson.data() + inputJson.size(), &root, &errs))
+		{
+			const Json::Value result = root["result"];
+			for (unsigned int i = 0; i < result.size(); i++)
+			{
+				index = result[i]["sort"].asString();
+				if (i < 100000)
+				{
+					index = std::string(5 - std::__cxx11::to_string(i).length(), '0') + std::__cxx11::to_string(i);
+					index = "インデックスは" + index + "である。";
+				}
+				else
+				{
+					index = std::__cxx11::to_string(i);
+					index = "インデックスは" + index + "である。";
+				}
+
+				//finalout["インデックスは"+result[i]["sort"].asString()+"である。"]=result[i]["sort"].asString();
+				finalout[index]["タイトル"]=result[i]["name"].asString();
+				finalout[index]["リンク"]=result[i]["path"].asString();
+			}
+			
+			return rewrite::toStyledStringRewrite(finalout);
 		}
 		else
 		{

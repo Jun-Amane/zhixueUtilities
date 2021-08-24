@@ -6,15 +6,19 @@
 
 #define postAnsURL "https://mhw.zhixue.com/hw/manage/homework/redeploy"
 #define redoURL "https://mhw.zhixue.com/hw/correction/redo"
+#define clkHwRedoUrl "https://mhw.zhixue.com/hw/clock/comment/redo"
 #define submitURL "https://mhw.zhixue.com/hw/answer/homework/submit"
+
 #define loginApiUrl "https://open.changyan.com/sso/v1/api"
 #define casLoginUrl "https://www.zhixue.com/container/app/login/casLogin"
 #define uniteLoginUrl "https://app.zhixue.com/appteacher/home/uniteLogin?"
+
 #define reviseQuestionUrl "https://mhw.zhixue.com/hw/revise/questions"
 #define hwDetailUrl "https://mhw.zhixue.com/hw/homework/detail"
 #define updateHwUrl "https://mhw.zhixue.com/hw/manage/homework/update"
 #define clkHWDetailUrl "https://mhw.zhixue.com/hw/clock/answer/getClockHomeworkDetail"
-#define clkHwRedoUrl "https://mhw.zhixue.com/hw/clock/comment/redo"
+
+#define getAttachmentUrl "https://mhw.zhixue.com/hw/homework/attachment/list"
 
 #define indexOverViewUrl "https://mhw.zhixue.com/hwreport/class/indexOverView"
 #define listQuestionViewUrl "https://mhw.zhixue.com/hwreport/question/listQuestionView" 
@@ -32,12 +36,16 @@ namespace analyzeJson
     std::string clkHwDetail2clockRecordId(std::string inputJson);
 
     std::string format(std::string inputJson);
+
+    std::string analyzeAttachJson(std::string inputJson);
 }
 
 namespace reqData
 {
     size_t CurlWrite_CallbackFunc_StdString(void *contents, size_t size, size_t nmemb, std::string *s);
+    
     std::string postAnsJson(std::string tchToken, std::string hwId);
+    std::string getAttachJson(std::string stuToken, std::string stuId, std::string hwId);
 
     std::string getHwListJson(std::string stuToken, bool completed);
     std::string redoHomework(std::string tchToken, std::string stuToken, std::string userId, std::string hwId, bool isClkHw, std::string stuHwId);

@@ -103,7 +103,7 @@ namespace login
         {
             printf("\nerr:非零项目为零\n");
         }
-        return toStyledStringRewrite(finalout);
+        return rewrite::toStyledStringRewrite(finalout);
     }
 
     std::string tchLoginPipeline(std::string username, std::string passwd)
@@ -149,7 +149,7 @@ namespace login
         {
             printf("\nerr\n");
         }
-        return toStyledStringRewrite(finalout);
+        return rewrite::toStyledStringRewrite(finalout);
     }
 
     std::string finalout2Token(std::string inputStr)

@@ -553,4 +553,38 @@ namespace reqData
 		return str;
 	}
 
+	std::string getAttachJson(std::string stuToken, std::string stuId, std::string hwId){
+		std::string POSTFIELDS = "{\"base\":{\"appId\":\"APP\",\"extend\":{},\"packageName\":\"\",\"sysType\":\"\",\"sysVersion\":\"\",\"udid\":\"\"},\"params\":{\"hwId\":\""+hwId+"\",\"studentId\":\""+stuId+"\"}}";
+		std::string auth = "Authorization:" + stuToken;
+		std::string len = "Content-Length:" + std::__cxx11::to_string(POSTFIELDS.size());
+
+		CURL *curl;
+		CURLcode res;
+		struct curl_slist *headers = nullptr;
+		std::string str;
+
+		headers = curl_slist_append(headers, len.c_str());
+		headers = curl_slist_append(headers, auth.c_str());
+		headers = curl_slist_append(headers, "Content-Type:application/json");
+
+		curl = curl_easy_init();
+		curl_easy_setopt(curl, CURLOPT_URL, getAttachmentUrl);
+		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+		curl_easy_setopt(curl, CURLOPT_POSTFIELDS, POSTFIELDS.c_str());
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, CurlWrite_CallbackFunc_StdString);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &str);
+		curl_easy_setopt(curl, CURLOPT_POST, 1);
+		curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
+		//curl_easy_setopt(curl, CURLOPT_HEADER, 1);
+		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+#ifdef _WIN32
+		curl_easy_setopt(curl, CURLOPT_CAINFO, "cacert.pem");
+#endif
+		res = curl_easy_perform(curl);
+		curl_easy_cleanup(curl);
+
+		return str;
+	}
+
+
 }
