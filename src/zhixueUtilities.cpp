@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 	auto redoMode = (clipp::command("redo").set(selected, mode::redoHomework),
 					 clipp::option("-tch", "--teacher-login") & clipp::value("tchUsername", tchUsername) % "ANY Teacher's Username" & clipp::value("tchPasswd", tchPasswd) % "THE Teacher's encoded Password",
 					 clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's encoded Psssword",
-					 clipp::option("-hi", "--homework-id") & clipp::value("hwId", hwId) % "Homework ID",
+					 clipp::option("-hi", "--homework-ids") & clipp::value("hwId", hwId) % "Homework ID" & clipp::value("stuHwId", stuHwId) % "Student Homework ID",
 					 clipp::option("-stu", "--student-login") & clipp::value("stuUsername", stuUsername) % "Student's username" & clipp::value("stuPasswd", stuPasswd) % "Student's encoded Psssword",
 					 clipp::option("--index").set(useIndex, true) & clipp::value("listIndex", listIndex) % "List Index",
 					 clipp::option("--already-done").set(completed, true).doc("use the list of completed homeworks"),
