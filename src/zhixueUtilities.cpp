@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
 														 { _EMIT_UTF8 = false; })
 					.doc("do not emit utf8 when printing json"),
 				clipp::option("-v", "--version").call([]
-													  { std::cout << "version 2.56b" << std::endl; })
+													  { std::cout << "version 5.12b" << std::endl; })
 					.doc("show version"),
 				clipp::option("-h", "--help").set(selected, mode::help).doc("show this help message"));
 
