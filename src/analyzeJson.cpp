@@ -118,6 +118,10 @@ namespace analyzeJson
 				finalout[index]["Title"] = list[i]["hwTitle"].asString();
 				finalout[index]["Homework ID"] = list[i]["hwId"].asString();
 				finalout[index]["Student Homework ID"] = list[i]["stuHwId"].asString();
+				finalout[index]["Subject"] = list[i]["subjectName"].asString();
+				finalout[index]["State"] = list[i]["homeWorkState"]["stateName"].asString();
+				finalout[index]["Type"] = list[i]["homeWorkTypeDTO"]["typeName"].asString();
+				finalout[index]["Class ID"] = list[i]["classId"].asString();
 			}
 		}
 		else
@@ -180,6 +184,40 @@ namespace analyzeJson
 		if (reader->parse(inputJson.data(), inputJson.data() + inputJson.size(), &root, &errs))
 		{
 			return root[index]["Student Homework ID"].asString();
+		}
+		else
+		{
+			std::cout << errs << std::endl;
+			return "";
+		}
+	}
+	std::string index2classId(std::string inputJson, std::string index)
+	{
+		Json::CharReaderBuilder readerBuilder;
+        JSONCPP_STRING errs;
+		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
+		Json::Value root;
+		index = "インデックスは" + index + "である。";
+		if (reader->parse(inputJson.data(), inputJson.data() + inputJson.size(), &root, &errs))
+		{
+			return root[index]["Class ID"].asString();
+		}
+		else
+		{
+			std::cout << errs << std::endl;
+			return "";
+		}
+	}
+	std::string index2typeName(std::string inputJson, std::string index)
+	{
+		Json::CharReaderBuilder readerBuilder;
+        JSONCPP_STRING errs;
+		std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
+		Json::Value root;
+		index = "インデックスは" + index + "である。";
+		if (reader->parse(inputJson.data(), inputJson.data() + inputJson.size(), &root, &errs))
+		{
+			return root[index]["Type"].asString();
 		}
 		else
 		{

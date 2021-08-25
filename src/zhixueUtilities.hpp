@@ -37,6 +37,9 @@ namespace analyzeJson
 
     std::string index2stuHwId(std::string inputJson, std::string index);
     std::string index2hwId(std::string inputJson, std::string index);
+    std::string index2classId(std::string inputJson, std::string index);
+    std::string index2typeName(std::string inputJson, std::string index);
+
     std::string clkHwDetail2clockRecordId(std::string inputJson);
 
     std::string format(std::string inputJson);
