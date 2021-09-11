@@ -1,4 +1,7 @@
+#include "tabulate/table.hpp"
 #include "jsonRewrite.hpp"
+
+using namespace tabulate;
 
 namespace operateHw
 {
@@ -69,18 +72,36 @@ namespace operateHw
         Json::Value root;
 
         Json::Value finalout;
+	Table outTable;
         /*概覽*/
         std::string showHwSubmitDetailResult = reqData::showHwSubmitDetail(tchToken, hwId, clazzId);
         if (reader->parse(showHwSubmitDetailResult.data(), showHwSubmitDetailResult.data() + showHwSubmitDetailResult.size(), &root, &errs))
         {
-
+/*
             finalout["平均時間"] = root["result"]["classOverView"]["avgCostTime"].asString();
             finalout["平均得点"] = root["result"]["classOverView"]["avgScore"].asString();
             finalout["合計点"] = root["result"]["classOverView"]["fullScore"].asString();
             finalout["提出された人数"] = root["result"]["classOverView"]["submitCount"].asString();
             finalout["提出していない人数"] = root["result"]["classOverView"]["unSubmitCount"].asString();
             finalout["訂正した人数"] = root["result"]["classOverView"]["reviseCount"].asString();
-        }
+  */      	
+		
+	     outTable.column(0).format()
+    .multi_byte_characters(true);
+//	    Table outTable;
+	    outTable.format().width(20);
+	    outTable.add_row({"name","st","sc","obj","sub","rate"});
+		const Json::Value listStuOverView = root["result"]["listStuOverView"];
+		for(unsigned int i=0; i< listStuOverView.size(); i++){                   
+			
+			outTable.add_row({listStuOverView[i]["studentName"].asString(), listStuOverView[i]["status"].asString(), listStuOverView[i]["stuTotalScore"].asString(), listStuOverView[i]["stuTotalObjScore"].asString(), listStuOverView[i]["stuTotalSubScore"].asString(), listStuOverView[i]["stuScoreRate"].asString()});
+		}
+
+		std::cout << outTable;		
+
+
+	  
+	}
         else
         {
             
@@ -118,6 +139,8 @@ namespace operateHw
             std::cout << errs << std::endl;
             return "";
         }
-        return rewrite::toStyledStringRewrite(finalout);
+	return "";
+//return analyzeJson::format(showHwSubmitDetailResult)+"\n"+analyzeJson::format(listQuestionViewResult);
+		//return rewrite::toStyledStringRewrite(finalout);
     }
 }
