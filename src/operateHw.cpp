@@ -73,6 +73,8 @@ namespace operateHw
 
         Json::Value finalout;
 	Table outTable;
+
+	std::string finalStr;
         /*概覽*/
         std::string showHwSubmitDetailResult = reqData::showHwSubmitDetail(tchToken, hwId, clazzId);
         if (reader->parse(showHwSubmitDetailResult.data(), showHwSubmitDetailResult.data() + showHwSubmitDetailResult.size(), &root, &errs))
@@ -97,7 +99,12 @@ namespace operateHw
 			outTable.add_row({listStuOverView[i]["studentName"].asString(), listStuOverView[i]["status"].asString(), listStuOverView[i]["stuTotalScore"].asString(), listStuOverView[i]["stuTotalObjScore"].asString(), listStuOverView[i]["stuTotalSubScore"].asString(), listStuOverView[i]["stuScoreRate"].asString()});
 		}
 
-		std::cout << outTable;		
+		std::stringstream ss;
+		std::streambud* buffer=cout.rdbuf();
+		std::cout.rdbuf(ss.rdbuf());
+		std::cout << outTable;
+		finalStr = ss.str();
+		std::cout.rdbuf(buffer);		
 
 
 	  
@@ -139,7 +146,7 @@ namespace operateHw
             std::cout << errs << std::endl;
             return "";
         }
-	return "";
+	return finalstr;
 //return analyzeJson::format(showHwSubmitDetailResult)+"\n"+analyzeJson::format(listQuestionViewResult);
 		//return rewrite::toStyledStringRewrite(finalout);
     }

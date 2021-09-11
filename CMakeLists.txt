@@ -1,6 +1,7 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.16) #cmake最低版本
 PROJECT("zhixueUtilities") #Project name
 SET(CMAKE_CXX_STANDARD 17)
+include_directories(src/include)
 AUX_SOURCE_DIRECTORY(src DIR_SRCS)
 SET(CMAKE_CXX_FLAGS "-ljsoncpp")#编译选项，非紧急情况不要动。
 IF(WIN32)
