@@ -65,23 +65,26 @@ namespace operateHw
 
     std::string showSubmitDetailPipeline(std::string tchToken, std::string hwId, std::string clazzId)
     {
-
+	    
         Json::CharReaderBuilder readerBuilder;
         JSONCPP_STRING errs;
         std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
         Json::Value root;
 
 //        Json::Value finalout;
-	Table outTable;
+Table stuTable;
 Table classDiagram;
-	Table classOverView;
-	//Table questionTable;
+	Table classTable;
+	Table questionTable;
 
 	std::string finalStr;
+
         /*概覽*/
         std::string showHwSubmitDetailResult = reqData::showHwSubmitDetail(tchToken, hwId, clazzId);
         if (reader->parse(showHwSubmitDetailResult.data(), showHwSubmitDetailResult.data() + showHwSubmitDetailResult.size(), &root, &errs))
         {
+//		Table stuTable;
+//		Table classTable;
 /*
             finalout["平均時間"] = root["result"]["classOverView"]["avgCostTime"].asString();
             finalout["平均得点"] = root["result"]["classOverView"]["avgScore"].asString();
@@ -90,30 +93,30 @@ Table classDiagram;
             finalout["提出していない人数"] = root["result"]["classOverView"]["unSubmitCount"].asString();
             finalout["訂正した人数"] = root["result"]["classOverView"]["reviseCount"].asString();
   */      	
-		
-	     outTable.column(0).format()
+
+	     stuTable.column(0).format()
 	     .multi_byte_characters(true);
 //	    Table outTable;
-	    outTable.format().width(20);
-classOverView.column(0).format().multi_byte_characters(true);
-classOverView.format().width(20);
-		classOverView.add_row({"平均時間",root["result"]["classOverView"]["avgCostTime"].asString()});
-		classOverView.add_row({"平均得点",root["result"]["classOverView"]["avgScore"].asString()});
-		classOverView.add_row({"合計点",root["result"]["classOverView"]["fullScore"].asString()});
-		classOverView.add_row({"提出された人数",root["result"]["classOverView"]["submitCount"].asString()});
-		classOverView.add_row({"提出していない人数",root["result"]["classOverView"]["unSubmitCount"].asString()});
-		classOverView.add_row({"訂正した人数",root["result"]["classOverView"]["reviseCount"].asString()});
+	    stuTable.format().width(20);
+classTable.column(0).format().multi_byte_characters(true);
+classTable.format().width(20);
+		classTable.add_row({"平均時間",root["result"]["classOverView"]["avgCostTime"].asString()});
+		classTable.add_row({"平均得点",root["result"]["classOverView"]["avgScore"].asString()});
+		classTable.add_row({"合計点",root["result"]["classOverView"]["fullScore"].asString()});
+		classTable.add_row({"提出された人数",root["result"]["classOverView"]["submitCount"].asString()});
+		classTable.add_row({"提出していない人数",root["result"]["classOverView"]["unSubmitCount"].asString()});
+		classTable.add_row({"訂正した人数",root["result"]["classOverView"]["reviseCount"].asString()});
 
-	    outTable.add_row({"name","st","sc","obj","sub","rate"});
+	    stuTable.add_row({"name","st","sc","obj","sub","rate"});
 		const Json::Value listStuOverView = root["result"]["listStuOverView"];
 		for(unsigned int i=0; i< listStuOverView.size(); i++){                   
 			
-			outTable.add_row({listStuOverView[i]["studentName"].asString(), listStuOverView[i]["status"].asString(), listStuOverView[i]["stuTotalScore"].asString(), listStuOverView[i]["stuTotalObjScore"].asString(), listStuOverView[i]["stuTotalSubScore"].asString(), listStuOverView[i]["stuScoreRate"].asString()});
+			stuTable.add_row({listStuOverView[i]["studentName"].asString(), listStuOverView[i]["status"].asString(), listStuOverView[i]["stuTotalScore"].asString(), listStuOverView[i]["stuTotalObjScore"].asString(), listStuOverView[i]["stuTotalSubScore"].asString(), listStuOverView[i]["stuScoreRate"].asString()});
 		}
 
 
-		classDiagram.add_row({classOverView});
-		classDiagram.add_row({outTable});
+		classDiagram.add_row({classTable});
+		classDiagram.add_row({stuTable});
 /*		std::stringstream ss;
 	std::streambuf* buffer=std::cout.rdbuf();
 		std::cout.rdbuf(ss.rdbuf());
@@ -132,12 +135,11 @@ classOverView.format().width(20);
         }
         /*詳細*/
         std::string listQuestionViewResult = reqData::listQuestionView(tchToken, hwId, clazzId);
-	Table questionTable;
+//	Table questionTable;
 
         if (reader->parse(listQuestionViewResult.data(), listQuestionViewResult.data() + listQuestionViewResult.size(), &root, &errs))
         {
-
-questionTable.add_row({"secName","questionTitle","平均得点","得点率","回答の概要"});
+		questionTable.add_row({"secName","questionTitle","平均得点","得点率"});
 
             const Json::Value listQuestionView = root["result"]["listQuestionView"];
             for (unsigned int i = 0; i < listQuestionView.size(); i++)
@@ -148,23 +150,24 @@ questionTable.add_row({"secName","questionTitle","平均得点","得点率","回
                 temp[listQuestionView[i]["sectionName"].asString()][listQuestionView[i]["questionTitle"].asString()]["この質問の得点率"] = listQuestionView[i]["curScoreRate"].asString();
                 */
 
-		    std::string questionDetail = reqData::getQuestionDetail(tchToken, hwId, clazzId, listQuestionView[i]["questionId"].asString().c_str());
+		  //  std::string questionDetail = reqData::getQuestionDetail(tchToken, hwId, clazzId, listQuestionView[i]["questionId"].asString().c_str());
 
-                Json::Value temp2;
-                if (reader->parse(questionDetail.data(), questionDetail.data() + questionDetail.size(), &temp2, &errs))
-                {
+                //Json::Value temp2;
+                //if (reader->parse(questionDetail.data(), questionDetail.data() + questionDetail.size(), &temp2, &errs))
+                //{
 //                    temp[listQuestionView[i]["sectionName"].asString()][listQuestionView[i]["questionTitle"].asString()]["回答の概要"] = temp2["result"]["answerDetail"];
-		    questionTable.add_row({listQuestionView[i]["sectionName"].asString(),listQuestionView[i]["questionTitle"].asString(),listQuestionView[i]["avgScore"].asString(),listQuestionView[i]["curScoreRate"].asString(),temp2["result"]["answerDetail"].toStyledString()});
-                }
-                else
-                {
-                    std::cout << errs << std::endl;
-                    return "";
-                }
+		    questionTable.add_row({listQuestionView[i]["sectionName"].asString(),listQuestionView[i]["questionTitle"].asString(),listQuestionView[i]["avgScore"].asString(),listQuestionView[i]["curScoreRate"].asString()});
+                //}
+//                else
+  //              {
+    //                std::cout << errs << std::endl;
+      //              return "";
+        //        }
   //              finalout["詳細"].append(temp);
   
-  		classDiagram.add_row({questionTable});		
+  		//classDiagram.add_row({questionTable});		
             }
+	    classDiagram.add_row({questionTable});
         }
         else
         {
@@ -172,11 +175,16 @@ questionTable.add_row({"secName","questionTitle","平均得点","得点率","回
             return "";
         }
 	
-std::stringstream ss;                                                                                                                                                                                                                 std::streambuf* buffer=std::cout.rdbuf();                                                                                                                                                                                                             std::cout.rdbuf(ss.rdbuf());                                                                                                                                                                                                                  std::cout << classDiagram;
+std::stringstream ss;
+std::streambuf* buffer=std::cout.rdbuf();
+std::cout.rdbuf(ss.rdbuf());
+std::cout << classDiagram;
                 finalStr = ss.str();
                 std::cout.rdbuf(buffer);
 
 	return finalStr;
+	std::cout << classDiagram;
+	return "";
 //return analyzeJson::format(showHwSubmitDetailResult)+"\n"+analyzeJson::format(listQuestionViewResult);
 //		return rewrite::toStyledStringRewrite(finalout);
     }
