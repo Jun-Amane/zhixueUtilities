@@ -71,10 +71,11 @@ namespace operateHw
         std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
         Json::Value root;
 
-        Json::Value finalout;
+//        Json::Value finalout;
 	Table outTable;
 Table classDiagram;
 	Table classOverView;
+	//Table questionTable;
 
 	std::string finalStr;
         /*概覽*/
@@ -113,12 +114,12 @@ classOverView.format().width(20);
 
 		classDiagram.add_row({classOverView});
 		classDiagram.add_row({outTable});
-		std::stringstream ss;
+/*		std::stringstream ss;
 	std::streambuf* buffer=std::cout.rdbuf();
 		std::cout.rdbuf(ss.rdbuf());
 		std::cout << classDiagram;
 		finalStr = ss.str();
-		std::cout.rdbuf(buffer);		
+		std::cout.rdbuf(buffer);		*/
 	//	std::cout << outTable;
 
 	  
@@ -131,28 +132,38 @@ classOverView.format().width(20);
         }
         /*詳細*/
         std::string listQuestionViewResult = reqData::listQuestionView(tchToken, hwId, clazzId);
+	Table questionTable;
+
         if (reader->parse(listQuestionViewResult.data(), listQuestionViewResult.data() + listQuestionViewResult.size(), &root, &errs))
         {
+
+questionTable.add_row({"secName","questionTitle","平均得点","得点率","回答の概要"});
 
             const Json::Value listQuestionView = root["result"]["listQuestionView"];
             for (unsigned int i = 0; i < listQuestionView.size(); i++)
             {
+		    /*
                 Json::Value temp;
                 temp[listQuestionView[i]["sectionName"].asString()][listQuestionView[i]["questionTitle"].asString()]["この質問の平均得点"] = listQuestionView[i]["avgScore"].asString();
                 temp[listQuestionView[i]["sectionName"].asString()][listQuestionView[i]["questionTitle"].asString()]["この質問の得点率"] = listQuestionView[i]["curScoreRate"].asString();
-                std::string questionDetail = reqData::getQuestionDetail(tchToken, hwId, clazzId, listQuestionView[i]["questionId"].asString().c_str());
+                */
+
+		    std::string questionDetail = reqData::getQuestionDetail(tchToken, hwId, clazzId, listQuestionView[i]["questionId"].asString().c_str());
 
                 Json::Value temp2;
                 if (reader->parse(questionDetail.data(), questionDetail.data() + questionDetail.size(), &temp2, &errs))
                 {
-                    temp[listQuestionView[i]["sectionName"].asString()][listQuestionView[i]["questionTitle"].asString()]["回答の概要"] = temp2["result"]["answerDetail"];
+//                    temp[listQuestionView[i]["sectionName"].asString()][listQuestionView[i]["questionTitle"].asString()]["回答の概要"] = temp2["result"]["answerDetail"];
+		    questionTable.add_row({listQuestionView[i]["sectionName"].asString(),listQuestionView[i]["questionTitle"].asString(),listQuestionView[i]["avgScore"].asString(),listQuestionView[i]["curScoreRate"].asString(),temp2["result"]["answerDetail"].toStyledString()});
                 }
                 else
                 {
                     std::cout << errs << std::endl;
                     return "";
                 }
-                finalout["詳細"].append(temp);
+  //              finalout["詳細"].append(temp);
+  
+  		classDiagram.add_row({questionTable});		
             }
         }
         else
@@ -160,7 +171,11 @@ classOverView.format().width(20);
             std::cout << errs << std::endl;
             return "";
         }
-	finalStr = finalStr+"\n"+rewrite::toStyledStringRewrite(finalout);
+	
+std::stringstream ss;                                                                                                                                                                                                                 std::streambuf* buffer=std::cout.rdbuf();                                                                                                                                                                                                             std::cout.rdbuf(ss.rdbuf());                                                                                                                                                                                                                  std::cout << classDiagram;
+                finalStr = ss.str();
+                std::cout.rdbuf(buffer);
+
 	return finalStr;
 //return analyzeJson::format(showHwSubmitDetailResult)+"\n"+analyzeJson::format(listQuestionViewResult);
 //		return rewrite::toStyledStringRewrite(finalout);
