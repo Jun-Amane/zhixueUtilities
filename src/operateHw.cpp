@@ -73,6 +73,8 @@ namespace operateHw
 
         Json::Value finalout;
 	Table outTable;
+Table classDiagram;
+	Table classOverView;
 
 	std::string finalStr;
         /*概覽*/
@@ -89,9 +91,18 @@ namespace operateHw
   */      	
 		
 	     outTable.column(0).format()
-    .multi_byte_characters(true);
+	     .multi_byte_characters(true);
 //	    Table outTable;
 	    outTable.format().width(20);
+classOverView.column(0).format().multi_byte_characters(true);
+classOverView.format().width(20);
+		classOverView.add_row({"平均時間",root["result"]["classOverView"]["avgCostTime"].asString()});
+		classOverView.add_row({"平均得点",root["result"]["classOverView"]["avgScore"].asString()});
+		classOverView.add_row({"合計点",root["result"]["classOverView"]["fullScore"].asString()});
+		classOverView.add_row({"提出された人数",root["result"]["classOverView"]["submitCount"].asString()});
+		classOverView.add_row({"提出していない人数",root["result"]["classOverView"]["unSubmitCount"].asString()});
+		classOverView.add_row({"訂正した人数",root["result"]["classOverView"]["reviseCount"].asString()});
+
 	    outTable.add_row({"name","st","sc","obj","sub","rate"});
 		const Json::Value listStuOverView = root["result"]["listStuOverView"];
 		for(unsigned int i=0; i< listStuOverView.size(); i++){                   
@@ -99,13 +110,16 @@ namespace operateHw
 			outTable.add_row({listStuOverView[i]["studentName"].asString(), listStuOverView[i]["status"].asString(), listStuOverView[i]["stuTotalScore"].asString(), listStuOverView[i]["stuTotalObjScore"].asString(), listStuOverView[i]["stuTotalSubScore"].asString(), listStuOverView[i]["stuScoreRate"].asString()});
 		}
 
+
+		classDiagram.add_row({classOverView});
+		classDiagram.add_row({outTable});
 		std::stringstream ss;
-		std::streambud* buffer=cout.rdbuf();
+	std::streambuf* buffer=std::cout.rdbuf();
 		std::cout.rdbuf(ss.rdbuf());
-		std::cout << outTable;
+		std::cout << classDiagram;
 		finalStr = ss.str();
 		std::cout.rdbuf(buffer);		
-
+	//	std::cout << outTable;
 
 	  
 	}
@@ -146,8 +160,9 @@ namespace operateHw
             std::cout << errs << std::endl;
             return "";
         }
-	return finalstr;
+	finalStr = finalStr+"\n"+rewrite::toStyledStringRewrite(finalout);
+	return finalStr;
 //return analyzeJson::format(showHwSubmitDetailResult)+"\n"+analyzeJson::format(listQuestionViewResult);
-		//return rewrite::toStyledStringRewrite(finalout);
+//		return rewrite::toStyledStringRewrite(finalout);
     }
 }
