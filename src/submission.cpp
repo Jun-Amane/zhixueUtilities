@@ -185,8 +185,8 @@ namespace submission
                                             if (reviseQuest["result"]["questions"][j]["childQuestions"][k]["childQuestionId"] == childQuestionId)
                                             {
                                                 const Json::Value answers = children[i]["answers"];
-                                                if (answers.size() == 0)
-                                                {
+                                                /*if (answers.size() == 0)
+                                                {*/
                                                     std::string tempe;
                                                     Json::Value temp;
                                                     if (attachmentUrl.empty())
@@ -207,9 +207,9 @@ namespace submission
                                                         std::cout << errs << std::endl;
                                                         return "";
                                                     }
-                                                }
+                                                /*}*/
 
-                                                else
+                                               /* else
                                                 {
                                                     for (unsigned int i = 0; i < answers.size(); i++)
                                                     {
@@ -226,7 +226,7 @@ namespace submission
                                                             return "";
                                                         }
                                                     }
-                                                }
+                                                }*/
                                             }
                                     }
                                 }

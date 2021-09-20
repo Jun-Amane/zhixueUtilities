@@ -30,7 +30,7 @@ extern bool _EMIT_UTF8;
 
 namespace analyzeJson
 {
-    std::string analyzeAnsJson(std::string inputJson);
+    std::string analyzeAnsJson(std::string inputJson, bool keepJson = true);
     std::string analyzeHwListJson(std::string inputJson);
 
     int analyzeIfSuccess(std::string str);
